@@ -1,0 +1,48 @@
+/* Empty. Add your own CSS if you like */
+.bg-container {
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    height: 100%;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(300%,#4be0ff));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #4be0ff 300%);
+}
+
+.bar-header {
+    background:#268ba3 !important;
+}
+
+.login-container > .button-row img {
+    max-width: 50%;
+}
+
+.login-container > .header {
+    -webkit-flex: 4;
+    padding-top: 20px;
+}
+
+.login-list {
+    width: 100%;
+    max-width: 800px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.login-img {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+
+.button-login {
+    max-width: 800px;
+    background-color:#268ba3 !important;
+}
+
+.button-positive {
+    max-width: 800px;
+    background-color:#268ba3 !important;
+}
+
+.item-content {
+    background: rgba(255, 255, 255, 0);
+}

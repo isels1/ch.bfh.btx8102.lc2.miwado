@@ -1,0 +1,9 @@
+{
+  "name": "angular-cryptography",
+  "version": "1.0.0",
+  "main": "./mdo-angular-cryptography.js",
+  "dependencies": {
+    "cryptojslib": "~3.1.2"
+  },
+  "ignore": []
+}

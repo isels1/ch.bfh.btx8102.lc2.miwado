@@ -1,0 +1,28 @@
+{
+  "name": "bluebutton",
+  "version": "0.4.2",
+  "description": "BlueButton.js allows web developers to parse and navigate complex health data with ease.",
+  "main": [
+    "build/bluebutton.js"
+  ],
+  "ignore": [
+    ".*",
+    "Gruntfile.js",
+    "src",
+    "spec"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "sample_ccdas": "https://github.com/chb/sample_ccdas.git"
+  },
+  "homepage": "https://github.com/blue-button/bluebutton.js",
+  "_release": "0.4.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.4.2",
+    "commit": "5d0ee7e57ee2cc92da49c48f821d497018fa0cf6"
+  },
+  "_source": "https://github.com/blue-button/bluebutton.js.git",
+  "_target": "^0.4.2",
+  "_originalSource": "https://github.com/blue-button/bluebutton.js.git"
+}
