@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function($scope, I4MIMidataService) {
+.controller('LoginCtrl', function($scope, I4MIMidataService, $timeout, $state) {
             
             // Use for testing the development environment
             $scope.user = {
@@ -9,6 +9,13 @@ angular.module('starter.controllers', [])
             }
             // Connect with MIDATA
             $scope.loggedIn = I4MIMidataService.loggedIn();
+            
+            var timer = $timeout(function refresh() {
+                                if (I4MIMidataService.loggedIn()) {
+                                 $state.go('chats');
+                                } else {
+                                 timer = $timeout(refresh, 1000);}
+                                 }, 1000);
             
             })
 

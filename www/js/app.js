@@ -32,53 +32,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
-
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-        .state('tab', {
-               url: '/tab',
-               abstract: true,
-               templateUrl: 'templates/tabs.html'
-               })
-        
-        .state('tab.login', {
-               url: '/login',
-               views: {
-               'tab-login': {
-               templateUrl: 'templates/tab-login.html',
+        .state('login', {
+               url: '/',
+               templateUrl: 'templates/login.html',
                controller: 'LoginCtrl'
-               }
-               }
-               })
-        
-        .state('tab.chats', {
-               url: '/chats',
-               views: {
-               'tab-chats': {
-               templateUrl: 'templates/tab-chats.html',
+        })
+        .state('chats', {
+               url:'/chat',
+               templateUrl: 'templates/chats.html',
                controller: 'ChatsCtrl'
-               }
-               }
                })
-        
-        .state('tab.chat-detail', {
+        .state('chat-detail', {
                url: '/chats/:chatId',
-               views: {
-               'tab-chats': {
                templateUrl: 'templates/chat-detail.html',
                controller: 'ChatDetailCtrl'
-               }
-               }
-               });
+               })
                 
-        $urlRouterProvider.otherwise("tab/login");
-                
-        })
+        $urlRouterProvider.otherwise("/");
+        });
 
-.directive('hideTabs', function($rootScope) {
+/*.directive('hideTabs', function($rootScope) {
            return {
            restrict: 'A',
            link: function($scope, $el) {
@@ -89,7 +67,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
            };
            })
-;
+ */
 
   // setup an abstract state for the tabs directive
 /*    .state('tab', {
