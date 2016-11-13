@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
             
             })
 
-.controller('ChatsCtrl', function($scope, I4MIMidataService, Chats) {
+.controller('ChatsCtrl', function($scope, I4MIMidataService, Chats, $state) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -29,16 +29,27 @@ angular.module('starter.controllers', [])
   //           });
             var asd = I4MIMidataService.loggedIn();
             if (asd) {
-            $scope.chats = Chats.all();
-            $scope.remove = function(chat) {
-            Chats.remove(chat);
-            };
+                $scope.chats = Chats.all();
+                //$scope.remove = function(chat) { Chats.remove(chat); };
+                $scope.logout = function() {
+                    I4MIMidataService.logout();
+                    $state.go('login');
+                };
             } else {
-            window.alert('Y u no login? (/-.-)/');
+                 $state.go('login')
             }
-  
+            
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-            $scope.chat = Chats.get($stateParams.chatId);
-            });
+.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, I4MIMidataService, $state) {
+            var asd = I4MIMidataService.loggedIn();
+             if (asd) {
+                $scope.chat = Chats.get($stateParams.chatId);
+                $scope.logout = function() {
+                    I4MIMidataService.logout();
+                $state.go('login');
+                };
+            } else {
+            $state.go('login')
+            }
+});
