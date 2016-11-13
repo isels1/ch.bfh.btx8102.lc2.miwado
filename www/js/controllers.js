@@ -27,8 +27,8 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //           });
-            var asd = I4MIMidataService.loggedIn();
-            if (asd) {
+            var isLoggedIn = I4MIMidataService.loggedIn();
+            if (isLoggedIn) {
                 $scope.chats = Chats.all();
                 //$scope.remove = function(chat) { Chats.remove(chat); };
                 $scope.logout = function() {
@@ -42,8 +42,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats, I4MIMidataService, $state) {
-            var asd = I4MIMidataService.loggedIn();
-             if (asd) {
+            var isLoggedIn = I4MIMidataService.loggedIn();
+             if (isLoggedIn) {
                 $scope.chat = Chats.get($stateParams.chatId);
                 $scope.logout = function() {
                     I4MIMidataService.logout();
