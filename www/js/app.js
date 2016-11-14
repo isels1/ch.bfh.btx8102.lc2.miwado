@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
 
-.constant('APPNAME', 'HelloI4MI')
-.constant('APPSECRET', '8385bee7542099b10315dcb7b803b61a')
+.constant('APPNAME', 'MIWADO')
+.constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
 .run(function($ionicPlatform) {
