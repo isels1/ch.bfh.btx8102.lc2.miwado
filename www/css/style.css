@@ -7,6 +7,12 @@
     background: -webkit-linear-gradient(top, #ffffff 0%, #4be0ff 300%);
 }
 
+.content-container {
+    max-width:500px;
+    height:100%;
+    margin:0 auto;
+}
+
 .bar-header {
     background:#268ba3 !important;
 }

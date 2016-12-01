@@ -22,12 +22,15 @@ angular.module('starter.controllers', [])
             })
 
 .controller('LoginCtrl', function($scope, I4MIMidataService, $timeout, $state) {
-            
+            if (window.localStorage.getItem("userType") == 1) {
             // Use for testing the development environment
             $scope.user = {
-                username: 'stefandaniel.iseli@gmail.com',
-                server: 'https://test.midata.coop:9000'
+            username: 'Patient1@midata.coop',
+            password: 'Patient123456!',
+            server: 'https://test.midata.coop:9000'
             }
+            }
+           
             // Connect with MIDATA
             $scope.loggedIn = I4MIMidataService.loggedIn();
             //$scope.hideLogin = "hideLogin";
@@ -61,7 +64,7 @@ angular.module('starter.controllers', [])
             if (isLoggedIn) {
                 $scope.chats = Chats.all();
             if (window.localStorage.getItem("userType") == 1) {
-                $state.go('#/chats/0');
+                //$state.go('#/chats/0');
             }
                 $scope.remove = function(chat) { Chats.remove(chat); };
                 $scope.logout = function() {
