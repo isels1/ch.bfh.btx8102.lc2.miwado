@@ -46,3 +46,17 @@
 .item-content {
     background: rgba(255, 255, 255, 0);
 }
+
+.type-img-div {
+    width: 50%;
+    max-width:400px;
+    float: left;
+}
+.type-img {
+    width: 100%;
+    max-width:400px;
+    float: left;
+}
+/*.hideLogin {
+     visibility: hidden;
+}*/

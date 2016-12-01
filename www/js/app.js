@@ -37,8 +37,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-        .state('login', {
+        .state('chooseType', {
                url: '/',
+               templateUrl: 'templates/chooseType.html',
+               controller: 'TypeCtrl'
+               })
+        .state('login', {
+               url: '/login',
                templateUrl: 'templates/login.html',
                controller: 'LoginCtrl'
         })
@@ -52,7 +57,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/chat-detail.html',
                controller: 'ChatDetailCtrl'
                })
-                
         $urlRouterProvider.otherwise("/chats");
         });
 
