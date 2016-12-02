@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
 
-.constant('APPNAME', 'HelloI4MI')
-.constant('APPSECRET', '8385bee7542099b10315dcb7b803b61a')
+.constant('APPNAME', 'MIWADO')
+.constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
 .run(function($ionicPlatform) {
@@ -32,53 +32,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
-
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-        .state('tab', {
-               url: '/tab',
-               abstract: true,
-               templateUrl: 'templates/tabs.html'
+        .state('chooseType', {
+               url: '/',
+               templateUrl: 'templates/chooseType.html',
+               controller: 'TypeCtrl'
                })
-        
-        .state('tab.login', {
+        .state('login', {
                url: '/login',
-               views: {
-               'tab-login': {
-               templateUrl: 'templates/tab-login.html',
+               templateUrl: 'templates/login.html',
                controller: 'LoginCtrl'
-               }
-               }
-               })
-        
-        .state('tab.chats', {
-               url: '/chats',
-               views: {
-               'tab-chats': {
-               templateUrl: 'templates/tab-chats.html',
+        })
+        .state('chats', {
+               url:'/chats',
+               templateUrl: 'templates/chats.html',
                controller: 'ChatsCtrl'
-               }
-               }
                })
-        
-        .state('tab.chat-detail', {
+        .state('chat-detail', {
                url: '/chats/:chatId',
-               views: {
-               'tab-chats': {
                templateUrl: 'templates/chat-detail.html',
                controller: 'ChatDetailCtrl'
-               }
-               }
-               });
-                
-        $urlRouterProvider.otherwise("tab/login");
-                
-        })
+               })
+        $urlRouterProvider.otherwise("/");
+        });
 
-.directive('hideTabs', function($rootScope) {
+/*.directive('hideTabs', function($rootScope) {
            return {
            restrict: 'A',
            link: function($scope, $el) {
@@ -89,7 +71,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
            };
            })
-;
+ */
 
   // setup an abstract state for the tabs directive
 /*    .state('tab', {

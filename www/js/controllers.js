@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
             }
             
             } else {
-              $state.go('login');
+                $state.go('login');
             }
             
             })
@@ -27,6 +27,14 @@ angular.module('starter.controllers', [])
             $scope.user = {
             username: 'Patient1@midata.coop',
             password: 'Patient123456!',
+            server: 'https://test.midata.coop:9000'
+            }
+            }
+            if (window.localStorage.getItem("userType") == 2) {
+            // Use for testing the development environment
+            $scope.user = {
+            username: 'donald.mallard@midata.coop',
+            password: 'HealthProf123456!',
             server: 'https://test.midata.coop:9000'
             }
             }
@@ -48,6 +56,10 @@ angular.module('starter.controllers', [])
                 console.log(userType);
                 $scope.hideLogin = "";
             }*/
+            
+            $scope.changeType = function () {
+            $state.go('chooseType');
+            }
             
             })
 

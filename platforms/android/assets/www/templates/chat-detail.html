@@ -5,9 +5,12 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{chat.name}}">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="logout()">
+            Logout
+        </button>
+    </ion-nav-buttons>
   <ion-content class="padding icons-basic-page">
-    <a class="button icon-left ion-chevron-left button-clear button-dark" href="#/tab/chats">Back</a>
-    <br />
     <img ng-src="{{chat.face}}" style="width: 64px; height: 64px">
     <p>
       {{chat.lastText}}

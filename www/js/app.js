@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/chat-detail.html',
                controller: 'ChatDetailCtrl'
                })
-        $urlRouterProvider.otherwise("/chats");
+        $urlRouterProvider.otherwise("/");
         });
 
 /*.directive('hideTabs', function($rootScope) {

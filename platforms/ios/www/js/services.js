@@ -29,7 +29,12 @@ angular.module('starter.services', [])
     name: 'Mike Harrington',
     lastText: 'This is wicked good ice cream.',
     face: 'img/mike.png'
-  }];
+               }, {
+               id: 5,
+               name: 'Nina Frei',
+               lastText: 'Hallo Stefan. Wi geizz dir?',
+               face: 'img/nina.jpeg'
+               }];
 
   return {
     all: function() {
@@ -46,5 +51,9 @@ angular.module('starter.services', [])
       }
       return null;
     }
-  };
+         };
+})
+
+.factory('Contacts', function() {
+    
 });

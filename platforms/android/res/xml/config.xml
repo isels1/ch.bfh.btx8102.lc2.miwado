@@ -19,7 +19,7 @@
         <param name="android-package" value="io.ionic.keyboard.IonicKeyboard" />
         <param name="onload" value="true" />
     </feature>
-    <name>myDemoApp</name>
+    <name>MIWADO</name>
     <description>
         An Ionic Framework and Cordova project.
     </description>
