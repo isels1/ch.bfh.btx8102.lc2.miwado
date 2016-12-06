@@ -55,5 +55,5 @@ angular.module('starter.services', [])
 })
 
 .factory('Contacts', function() {
-    
+         
 });

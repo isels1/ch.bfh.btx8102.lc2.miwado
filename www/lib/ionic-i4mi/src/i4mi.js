@@ -956,6 +956,9 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		} else {
 			data.username = user.username;
 			data.password = user.password;
+                               
+                               //NEW
+                               data.role = user.role;
 		}
 		user.server = 'https://' + user.server.replace(/^https*:\/\//, '');
 		return $q(function(resolve, reject){

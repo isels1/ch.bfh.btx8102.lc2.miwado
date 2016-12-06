@@ -27,15 +27,17 @@ angular.module('starter.controllers', [])
             $scope.user = {
             username: 'Patient1@midata.coop',
             password: 'Patient123456!',
-            server: 'https://test.midata.coop:9000'
+            server: 'https://test.midata.coop:9000',
+            role: 'member'
             }
             }
             if (window.localStorage.getItem("userType") == 2) {
             // Use for testing the development environment
             $scope.user = {
             username: 'donald.mallard@midata.coop',
-            password: 'HealthProf123456!',
-            server: 'https://test.midata.coop:9000'
+            password: 'Hp123456!',
+            server: 'https://test.midata.coop:9000',
+            role: 'provider'
             }
             }
            
@@ -92,11 +94,7 @@ angular.module('starter.controllers', [])
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats, I4MIMidataService, $state) {
              var isLoggedIn = I4MIMidataService.loggedIn();
              if (isLoggedIn) {
-                if (window.localStorage.getItem("userType") == 1) {
-                    $scope.chat = Chats.get(0);
-                } else {
-                    $scope.chat = Chats.get($stateParams.chatId);
-                }
+                $scope.chat = Chats.get($stateParams.chatId);
                 $scope.logout = function() {
                     I4MIMidataService.logout();
                 $state.go('login');
