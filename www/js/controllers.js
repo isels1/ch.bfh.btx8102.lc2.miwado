@@ -3,9 +3,9 @@ angular.module('starter.controllers', [])
 .controller('TypeCtrl', function($scope, I4MIMidataService, $timeout, $state) {
             //DELETE LOCAL STORAGE FOR TEST USE
             window.localStorage.setItem("userType", "");
-            
+
             if (window.localStorage.getItem("userType") == "") {
-            
+
             $scope.choosePatient = function () {
                 window.localStorage.setItem("userType", 1);
                 $state.go('login');
@@ -14,11 +14,11 @@ angular.module('starter.controllers', [])
                 window.localStorage.setItem("userType", 2);
                 $state.go('login');
             }
-            
+
             } else {
                 $state.go('login');
             }
-            
+
             })
 
 .controller('LoginCtrl', function($scope, I4MIMidataService, $timeout, $state) {
@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
             role: 'provider'
             }
             }
-           
+
             // Connect with MIDATA
             $scope.loggedIn = I4MIMidataService.loggedIn();
             //$scope.hideLogin = "hideLogin";
@@ -50,7 +50,7 @@ angular.module('starter.controllers', [])
                                 } else {
                                  timer = $timeout(refresh, 1000);}
                                  }, 1000);
-            
+
            /* $scope.saveSelectValue = function (userType) {
                 //1 = Patient
                 //2 = Health Provider
@@ -58,11 +58,11 @@ angular.module('starter.controllers', [])
                 console.log(userType);
                 $scope.hideLogin = "";
             }*/
-            
+
             $scope.changeType = function () {
             $state.go('chooseType');
             }
-            
+
             })
 
 .controller('ChatsCtrl', function($scope, I4MIMidataService, Chats, $state) {
@@ -73,10 +73,11 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //           });
-            
+
             var isLoggedIn = I4MIMidataService.loggedIn();
             if (isLoggedIn) {
                 $scope.chats = Chats.all();
+                $scope.patients = Chats.retreivePatients(I4MIMidataService, ['data','name']);
             if (window.localStorage.getItem("userType") == 1) {
                 //$state.go('#/chats/0');
             }
@@ -88,7 +89,7 @@ angular.module('starter.controllers', [])
             } else {
                  $state.go('login')
             }
-            
+
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats, I4MIMidataService, $state) {

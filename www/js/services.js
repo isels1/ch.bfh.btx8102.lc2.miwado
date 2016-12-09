@@ -29,14 +29,20 @@ angular.module('starter.services', [])
     name: 'Mike Harrington',
     lastText: 'This is wicked good ice cream.',
     face: 'img/mike.png'
-               }, {
-               id: 5,
-               name: 'Nina Frei',
-               lastText: 'Hallo Stefan. Wi geizz dir?',
-               face: 'img/nina.jpeg'
-               }];
+  }, {
+     id: 5,
+     name: 'Nina Frei',
+     lastText: 'Hallo Stefan. Wi geizz dir?',
+     face: 'img/nina.jpeg'
+     }];
 
   return {
+    retreivePatients: function (service, fields) {
+        var x = service.search(fields, {}).then(function(response) {
+          console.log(response.data);
+        });
+
+    },
     all: function() {
       return chats;
     },
@@ -55,5 +61,5 @@ angular.module('starter.services', [])
 })
 
 .factory('Contacts', function() {
-         
+
 });
