@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.ownServices', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
 
 .constant('APPNAME', 'MIWADO')
 .constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
@@ -24,7 +24,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-                       
+
                        if (window.Worker) {
                         //var myWorker = new Worker('worker.js');
                        }
@@ -59,79 +59,3 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                })
         $urlRouterProvider.otherwise("/");
         });
-
-/*.directive('hideTabs', function($rootScope) {
-           return {
-           restrict: 'A',
-           link: function($scope, $el) {
-           $rootScope.hideTabs = 'tabs-item-hide';
-           $scope.$on('$destroy', function() {
-                      $rootScope.hideTabs = '';
-                      });
-           }
-           };
-           })
- */
-
-  // setup an abstract state for the tabs directive
-/*    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-
-  // Each tab has its own nav history stack:
-
-  .state('tab.login' , {
-         url: '/login',
-         views: {
-         'tab-login': {
-         templateUrl: 'templates/tab-login.html',
-         controller: 'LoginCtrl'
-         }
-         }
-   })
-        
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
-
-}); */

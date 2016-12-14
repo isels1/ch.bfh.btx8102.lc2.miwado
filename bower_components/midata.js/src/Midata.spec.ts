@@ -34,7 +34,7 @@ describe('Midata', () => {
         var login;
 
         beforeEach(() => {
-            login = midata.login('testuser2@testuser.com', 'Testuser123');
+            login = midata.login('testuser@testuser.com', 'Testuser123');
         });
 
 
@@ -61,7 +61,7 @@ describe('Midata', () => {
             expect(midata.user).toBeUndefined();
 
             login.then((response) => {
-                expect(midata.user).toEqual({name: 'testuser2@testuser.com'});
+                expect(midata.user).toEqual({name: 'testuser@testuser.com'});
                 done();
             })
             .catch(() => {
@@ -144,22 +144,11 @@ describe('Midata', () => {
             });
         });
 
-        it('#search()', (done) => {
-            login
-            .then(() => {
-                midata.search('Observation', {})
-                .then((obs) => {
-                    console.log('results: ');
-                    console.log(obs);
-                    done();
-                });
-            })
-        });
-
     });
 
 
     describe('with invalid credentials', () => {
+
         // beforeEach(() => {
         //     util.apiCall = jasmine.createSpy().and.callFake(() => {
         //         return Promise.reject({
@@ -172,8 +161,9 @@ describe('Midata', () => {
         var login;
 
         beforeEach(() => {
-            login = midata.login('testuser2@testuser.com', 'WRONG PASSWORD');
+            login = midata.login('testuser@testuser.com', 'WRONG PASSWORD');
         });
+
 
         it('#login() should return a rejected promise containing the error message', (done) => {
             login
@@ -183,6 +173,5 @@ describe('Midata', () => {
         });
 
     });
-
 
 });

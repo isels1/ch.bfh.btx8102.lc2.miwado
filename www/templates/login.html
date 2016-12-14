@@ -10,12 +10,11 @@
             <div class="col header text-center login-img-container">
                 <img class="login-img" src="./img/Logo2.0.png"/>
                 <div class="list login-list" ng-class="hideLogin">
-                    <i4mi-midata-login user="user" controller-name="I4MIMidataLoginController"></i4mi-midata-login>
+                    <input class="login-list input" type="text" id="user" value="{{user.username}}" />
+                    <input class="login-list input" type="password" id="pw" value="{{user.password}}"/>
+                    <button class="button button-full button-positive" ng-click="newLogin()">Login</button>
+                    <!--<i4mi-midata-login user="user" controller-name="I4MIMidataLoginController"></i4mi-midata-login>-->
                 </div>
-                <!--<select calss="item item-input item-content" ng-model="mySelect" ng-change="saveSelectValue(mySelect)">
-                    <option value="1" selected="selected">Patient</option>
-                    <option value="2">Health Provider</option>
-                </select>-->
                 </section>
             </div>
             </div>
