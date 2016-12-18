@@ -1,0 +1,83 @@
+/*Test CSS for TextTempelate*/
+.tempelateTermin{
+
+}
+
+.myRow{
+   min-width: 100%;
+   min-height: auto !important;
+   max-height: auto;
+   text-align: left;
+}
+
+
+.selectGender{
+  height: 5%;
+  background-color: inherit;
+  border: none;
+}
+.headerNameField{
+  height: 5% !important;
+  margin: 0px !important;
+  background-color: inherit;
+}
+
+.selectDate{
+  background-color: inherit;
+  max-height: 12px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  margin-top: 1% !important;
+  margin-left: 4% !important;
+  min-width: 10% !important;
+  max-width: 30% !important;
+  font-size: 12px !important;
+}
+
+.selectTime{
+  background-color: inherit;
+  max-height: 12px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  margin-top: 1% !important;
+  margin-left: 4% !important;
+  min-width: 10% !important;
+  max-width: 30% !important;
+  font-size: 12px !important;
+}
+
+.senderName{
+  height: 5% !important;
+  margin: 0px !important;
+  background-color: inherit;
+}
+
+.spacerRow{
+  margin-top: 2% !important;
+}
+
+.spacerRow2{
+  margin-top: -3% !important;
+}
+
+.textHeader{
+  display: flex;
+  float: left;
+  margin: 1px;
+}
+
+.textBody{
+  display: flex;
+  float: left;
+}
+
+.textBody{
+  display: flex;
+  float: left;
+}
+
+.rowFixer{
+  float: left;
+}
+
+/*--FIN--*/
