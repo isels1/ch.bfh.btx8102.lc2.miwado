@@ -1,10 +1,11 @@
+
 <!--
 This template will be used in the chat as a guidline for sending an appointment request
 to the Patient.
 -->
 <link href="css/textTemplatesanswerOtherAppointment.css" rel="stylesheet">
 <div class="tempelateTermin">
-<!--Header-->
+  <!--Header-->
   <div class="row ">
     <label class="textHeader">Guten Tag</label>
     <select class="selectGender">
@@ -18,7 +19,16 @@ to the Patient.
   <!--Body-->
   <div class="row spacerRow">
     <label class="textBody">
-      Vielen Dank, gerne bestätige den Termin am {{message.termin}}
+      Ich möchte mich gerne für den Termin
+    </label>
+  </div>
+  <div class="row">
+    <label class="textBody">
+      am
+      <input type="date" class="selectDate">
+      um
+      <input type="time" class="selectTime">
+      abmelden.
     </label>
   </div>
 

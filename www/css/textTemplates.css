@@ -10,12 +10,35 @@
    text-align: left;
 }
 
+input[type=checkbox] {
+    transform: scale(1.5);
+    -ms-transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    margin: 10px;
+}
 
 .selectGender{
   height: 5%;
   background-color: inherit;
   border: none;
 }
+
+.locationVisibile{
+  visibility: visible;
+}
+
+.locationHidden{
+  visibility: hidden;
+}
+
+.selectSection{
+  min-height: 10% !important;
+  width: auto;
+  background-color: inherit;
+  border: none;
+
+}
+
 .headerNameField{
   height: 5% !important;
   margin: 0px !important;
@@ -24,14 +47,15 @@
 
 .selectDate{
   background-color: inherit;
-  max-height: 12px !important;
+  max-height: 15px !important;
   padding: 0px !important;
   margin: 0px !important;
   margin-top: 1% !important;
-  margin-left: 4% !important;
-  min-width: 10% !important;
-  max-width: 30% !important;
+  margin-left: 3% !important;
+  min-width: 35% !important;
+  max-width: 35% !important;
   font-size: 12px !important;
+  float: left !important;
 }
 
 .selectTime{
@@ -71,8 +95,9 @@
   float: left;
 }
 
-.textBody{
-  display: flex;
+
+.textBody.fixer1{
+  margin-left: -1%;
   float: left;
 }
 

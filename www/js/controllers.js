@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('TypeCtrl', function($scope, $timeout, $state) {
+.controller('TypeCtrl', function($scope, $timeout, $state, $compile) {
   //DELETE LOCAL STORAGE FOR TEST USE
   window.localStorage.setItem("userType", "");
 
@@ -18,6 +18,23 @@ angular.module('starter.controllers', [])
   } else {
       $state.go('login');
   }
+
+  //Textbaussteine Controller (später ausgelagert jetztin changeRole für testing)
+      $scope.status = true;
+
+  $scope.addLocation = function(){
+      var locationDiv =     document.getElementsByClassName('locationVisibile');
+      if($scope.status == true){
+        $scope.status = false;
+        locationDiv[1].style.visibility = "hidden";
+        locationDiv[1].style.height = "0px";
+      }else{
+        $scope.status = true;
+        locationDiv[1].style.visibility = "visible";
+        locationDiv[1].style.height = "";
+      }
+    }
+
 
   })
 
