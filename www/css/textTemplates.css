@@ -27,6 +27,18 @@ input[type=checkbox] {
   visibility: visible;
 }
 
+.selectVisible{
+  visibility: visible;
+}
+
+.spacer{
+  margin-top: -3% !important;
+}
+
+.spacer.fixer1{
+  margin-bottom: -3% !important;
+}
+
 .locationHidden{
   visibility: hidden;
 }
@@ -57,6 +69,7 @@ input[type=checkbox] {
   font-size: 12px !important;
   float: left !important;
 }
+
 
 .selectTime{
   background-color: inherit;
