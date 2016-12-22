@@ -16,32 +16,54 @@
   </div>
 
   <!--Body-->
-  <div class="row myRow">
+  <div class="row myRow ">
     <label class="textBody">
       Sie haben am
       <input type="date" class="selectDate">
-      um
+      <label class="textBody fixer1">
+        um
+      </label>
       <input type="time" class="selectTime">
     </label>
   </div>
   <div class="row myRow">
     <label class="textBody">
-      den nächsten Termin in der UDEM des Insels Spitals. Wir bitte Sie diesen Termin zu
+      einen Termin in der Abteilung
+      <select class="selectSection">
+        <option>---</option>
+        <option>Diabetologie</option>
+        <option>Endokrinologie</option>
+        <option>Ernährungsmedizin</option>
+        <option>Metabolismus</option>
+      </select>
+      .
+    </label>
+  </div>
+    <div class='row myRow locationVisibile' id="location">
+      <label class='textBody'>
+       Wir befinden uns in der Kinderklinik, Eingang 31, Stockwerk G
+      </label>
+    </div>
+  <div class="row myRow">
+    <label class="textBody">
+      Bitte nehmen Sie ihre Medikamentenliste und Versichertenkarte mit. Absage des Termins können bis
     </label>
   </div>
   <div class="row myRow">
     <label class="textBody">
-     bestätigen oder einen Ersatztermin vorzuschlagen.
+      24 Stunden vor dem Termin erfolgen. Absagen welche später erfolgen müssen wir Ihnen leider verrechnen.
     </label>
   </div>
   <div class="row myRow">
     <label class="textBody">
-        Wir werden sie einige Tage vor dem eigentlichen Termin erneut daran erinnern.
+      Sie erreichen uns unter 031 632 40 70.
     </label>
   </div>
+  Ort einblenden
+  <input type="checkbox"  class="sexyCheckBox" ng-model="status" ng-change="addLocation()" id="myCheck" >
 
   <!--Footer-->
-  <div class="row spacerRow">
+  <div class="row ">
     <label class="textFooter">Mit freundlichen Grüssen</label>
   </div>
   <div class="row">

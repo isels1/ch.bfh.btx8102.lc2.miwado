@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('TypeCtrl', function($scope, $timeout, $state) {
+.controller('TypeCtrl', function($scope, $timeout, $state, $compile) {
   //DELETE LOCAL STORAGE FOR TEST USE
   window.localStorage.setItem("userType", "");
 
@@ -19,7 +19,47 @@ angular.module('starter.controllers', [])
       $state.go('login');
   }
 
+  //Textbaussteine Controller (später ausgelagert jetztin changeRole für testing)
+      $scope.status = true;
+
+  $scope.addLocation = function(){
+      var locationDiv =     document.getElementsByClassName('locationVisibile');
+      if($scope.status == true){
+        $scope.status = false;
+        locationDiv[1].style.visibility = "hidden";
+        locationDiv[1].style.height = "0px";
+      }else{
+        $scope.status = true;
+        locationDiv[1].style.visibility = "visible";
+        locationDiv[1].style.height = "";
+      }
+    }
+
+
+
+
+  $scope.selectedOption = true;
+
+  $scope.statusChange = function(){
+    var selcetionDiv =     document.getElementsByClassName('selectVisible');
+    if($scope.selectedOption == true){
+      $scope.selectedOption = false;
+      selcetionDiv[1].style.visibility = "hidden";
+      selcetionDiv[1].style.height = "15px";
+      selcetionDiv[1].style.width = "0px";
+    }else{
+      $scope.selectedOption = true;
+      selcetionDiv[1].style.visibility = "visible";
+      selcetionDiv[1].style.height = "";
+      selcetionDiv[1].style.width = "";
+      selcetionDiv[1].style.marginTop = "-3% !important";
+      selcetionDiv[1].style.marginBottom = "-3% !important";
+    }
+  }
+
+
   })
+
 
 .controller('LoginCtrl', function($scope, $timeout, $state, ownMidataService) {
   if (window.localStorage.getItem("userType") == 1) {
