@@ -41,6 +41,17 @@ angular.module('starter.controllers', [])
   }
 
   $scope.newLogin = function() {
+    var un = document.getElementById("user").value;
+    var pw = document.getElementById("pw").value;
+
+    if (un != '' && $scope.user.username !== un) {
+      $scope.user.username = un;
+    }
+
+    if (pw != '' && $scope.user.password !== pw) {
+      $scope.user.password = pw;
+    }
+
     ownMidataService.login($scope.user.username,
              $scope.user.password,
              $scope.user.role);
