@@ -47,14 +47,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/login.html',
                controller: 'LoginCtrl'
         })
-        .state('chats', {
-               url:'/chats',
-               templateUrl: 'templates/chats.html',
+        .state('threadOverview', {
+               url:'/threadOverview',
+               templateUrl: 'templates/threadOverview.html',
                controller: 'ChatsCtrl'
                })
-        .state('chat-detail', {
-               url: '/chats/:chatId',
-               templateUrl: 'templates/chat-detail.html',
+        .state('communicationThread', {
+               url: '/communicationThread',
+               templateUrl: 'templates/communicationThread.html',
                controller: 'ChatDetailCtrl'
                })
         $urlRouterProvider.otherwise("/");

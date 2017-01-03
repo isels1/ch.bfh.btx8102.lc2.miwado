@@ -309,6 +309,10 @@ angular.module('starter.ownServices', [])
     return md.save(data);
   }
 
+  function saveComm(commRes){
+    return md.save(commRes);
+  }
+
   // TO BE CONTINUED... (/-.-)/ |__|
 
   return {
@@ -317,6 +321,7 @@ angular.module('starter.ownServices', [])
     logout: logout,
     search: search,
     save: save,
+    saveComm: saveComm,
     getWeight: getWeight,
     getPulse: getPulse,
     getBloodPressure: getBloodPressure,

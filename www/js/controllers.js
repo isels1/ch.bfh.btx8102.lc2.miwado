@@ -84,13 +84,13 @@ angular.module('starter.controllers', [])
     var un = document.getElementById("user").value;
     var pw = document.getElementById("pw").value;
 
-    if (un != '' && $scope.user.username !== un) {
+    /*if (un != '' && $scope.user.username !== un) {
       $scope.user.username = un;
     }
 
     if (pw != '' && $scope.user.password !== pw) {
       $scope.user.password = pw;
-    }
+    }*/
 
     ownMidataService.login($scope.user.username,
              $scope.user.password,
@@ -102,7 +102,15 @@ angular.module('starter.controllers', [])
   //$scope.hideLogin = "hideLogin";
   var timer = $timeout(function refresh() {
     if (ownMidataService.loggedIn()) {
-      $state.go('chats');
+      window.localStorage.setItem("userName", $scope.user.username);
+
+      // When Patient, go directly to communication thread
+      // Else --> Load "contact" List
+      if (window.localStorage.getItem("userType") == 1) {
+          $state.go('communicationThread');
+      } else {
+          $state.go('threadOverview');
+      }
     } else {
       timer = $timeout(refresh, 1000);}
     },
@@ -122,13 +130,10 @@ angular.module('starter.controllers', [])
 
   })
 
-.controller('ChatsCtrl', function($scope, Chats, $state, ownMidataService) {
-  //$scope.$on('$ionicView.enter', function(e) {
-  //           });
-
+.controller('ChatsCtrl', function($scope, Contacts, $state, ownMidataService) {
   var isLoggedIn = ownMidataService.loggedIn();
   if (isLoggedIn) {
-      var searchObj = {
+      /*var searchObj = {
         //name: ''
       }
       ownMidataService.search("Person", searchObj).then(function(personList){
@@ -138,7 +143,6 @@ angular.module('starter.controllers', [])
           $scope.patientLookup(personList);
         }
       });
-
       $scope.patientLookup = function(personList) {
         var personLinkList = new Array();
         for(var i = 0; i < personList.length; i++) {
@@ -157,27 +161,22 @@ angular.module('starter.controllers', [])
             _id: personLinkList[i].id
           }
           ownMidataService.search("Patient", searchObj).then(function(r) {
-            //patients.push(r);
-
             console.log(r);
           })
         }
 
-      };
+      };*/
 
 
+      $scope.patients = Contacts.allPats();
 
-      //$scope.chats = Chats.all();
-      //$scope.patients = Chats.retreivePatients(I4MIMidataService, ['data','name']);
-      if (window.localStorage.getItem("userType") == 1) {
-          //$state.go('#/chats/0');
-      }
-      $scope.remove = function(chat) { Chats.remove(chat); };
+      //$scope.remove = function(chat) { Chats.remove(chat); };
       $scope.logout = function() {
           ownMidataService.logout();
           $state.go('login');
       };
 
+      //Function adds communicationThreads when midata would work
       $scope.addChats = function(r) {
         console.log(r);
       };
@@ -187,14 +186,113 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, I4MIMidataService, $state) {
-             var isLoggedIn = I4MIMidataService.loggedIn();
+.controller('ChatDetailCtrl', function($scope, $stateParams, Contacts, ownMidataService, $state, $ionicScrollDelegate) {
+             var isLoggedIn = ownMidataService.loggedIn();
              if (isLoggedIn) {
-                $scope.chat = Chats.get($stateParams.chatId);
-                $scope.logout = function() {
-                    I4MIMidataService.logout();
-                $state.go('login');
+               $scope.me = Contacts.selectPat(window.localStorage.getItem("userName"));
+               $scope.myId = "123123" ;//$scope.me.id;
+
+               console.log("This is me:" + JSON.stringify($scope.me));
+               console.log("My id is: " + $scope.myId);
+               console.log('in Thread');
+
+               $scope.hideTime = true;
+
+                var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+
+                $scope.receiveMessage = function() {
+                    var res = "Communication";
+                    var params = {};
+                    ownMidataService.search(res, params).then(function(comms) {
+                      comms = comms.reverse();
+                      console.log(comms);
+                      $scope.messages = [];
+
+                      for (var i = 0; i < comms.length; i++) {
+                        var d = new Date(comms[i].sent)
+                        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+                        var t = ""
+                        if (comms[i].payload == null) {
+                          t = "No Content aviable";
+                        } else {
+                          t = comms[i].payload[0].contentString
+                        }
+
+                        var sId = comms[i].sender.reference;
+                        sId = sId.replace("Patient/", "");
+
+                        if ($scope.me.id === sId) {
+                          console.log("MyMsg");
+                        }
+
+                        $scope.messages.push({
+                            userId: sId,
+                            sender: comms[i].sender.display,
+                            text: t,
+                            time: d
+                          });
+                      }
+                    });
+                }
+
+                $scope.sendMessage = function() {
+                  var d = new Date();
+
+                  var category = "FreeText";
+                  var sender = "Patient/" + $scope.me.id;
+                  var medium = {
+                    type: "App",
+                    name: "MIWADO"
+                  };
+                  var subject = "Patient/" + $scope.me.id;
+
+                  var communicationResource = {
+                    "resourceType" : "Communication",
+                    "category" : { category },
+                    "sender" : { sender },
+                    "status" : "in-progress",
+                    "recipient" : [{"reference":"Patient/" + $scope.me.id, "display": $scope.me.name}],
+                    "payload" : [{
+                      "contentString" : $scope.data.message
+                      //"contentAttachment" : {},
+                      //"contentReference" : {}
+                    }],
+                    "medium" : [{ medium }],
+                    "status" : "in-progress", // in-progress | completed | suspended | rejected | failed
+                    "encounter" : {},
+                    "sent" : d,
+                    //"received" : "<dateTime>", // When received
+                    "reason" : [{}],
+                    "subject" : { subject },
+                    "requestDetail" : {}
+                  }
+
+                  ownMidataService.saveComm(communicationResource).then(function(e){
+                      console.log('Resource Created: ' + e);
+                      $scope.receiveMessage();
+                      $ionicScrollDelegate.scrollBottom(true);
+                  });
+
+                  delete $scope.data.message;
                 };
+
+                $scope.inputDown = function() {
+                if (isIOS) $scope.data.keyboardHeight = 0;
+                  $ionicScrollDelegate.resize();
+                };
+
+                $scope.closeKeyboard = function() {
+                  // cordova.plugins.Keyboard.close();
+                };
+
+                $scope.data = {};
+                $scope.messages = [];
+
+                $scope.receiveMessage();
+               $scope.logout = function() {
+                   ownMidataService.logout();
+                   $state.go('login');
+               };
             } else {
              $state.go('login')
             }
