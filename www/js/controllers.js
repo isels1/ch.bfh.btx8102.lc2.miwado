@@ -170,6 +170,7 @@ angular.module('starter.controllers', [])
 
       $scope.patients = Contacts.allPats();
 
+
       //$scope.remove = function(chat) { Chats.remove(chat); };
       $scope.logout = function() {
           ownMidataService.logout();
@@ -190,13 +191,10 @@ angular.module('starter.controllers', [])
              var isLoggedIn = ownMidataService.loggedIn();
              if (isLoggedIn) {
                $scope.me = Contacts.selectPat(window.localStorage.getItem("userName"));
-               $scope.myId = "123123" ;//$scope.me.id;
-
-               console.log("This is me:" + JSON.stringify($scope.me));
-               console.log("My id is: " + $scope.myId);
-               console.log('in Thread');
-
                $scope.hideTime = true;
+
+               console.log("Id from me: " + $scope.me.id);
+               console.log("id from my: " + $scope.myId);
 
                 var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
 
@@ -221,15 +219,20 @@ angular.module('starter.controllers', [])
                         var sId = comms[i].sender.reference;
                         sId = sId.replace("Patient/", "");
 
+                        //if own messages to left site ==> other
+                        var style = '';
                         if ($scope.me.id === sId) {
-                          console.log("MyMsg");
+                          style = 'other';
+                        } else {
+                          style = '';
                         }
 
                         $scope.messages.push({
                             userId: sId,
                             sender: comms[i].sender.display,
                             text: t,
-                            time: d
+                            time: d,
+                            style: style
                           });
                       }
                     });
@@ -289,7 +292,7 @@ angular.module('starter.controllers', [])
                 $scope.messages = [];
 
                 $scope.receiveMessage();
-               $scope.logout = function() {
+                $scope.logout = function() {
                    ownMidataService.logout();
                    $state.go('login');
                };

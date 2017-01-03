@@ -10,31 +10,31 @@
       {{chat.lastText}}
     </p>
   </ion-content>-->
-  <ion-content class="content-stable"
-              on-swipe-left="hideTime = false"
-              on-swipe-right="hideTime = true">
-   <img ng-src="{{me.face}}" style="width: 64px; height: 64px">
+  <div class="contacImg">
+  <img ng-src="{{me.face}}" style="width: 64px; height: 64px; margin-left: 2px; margin-top: 46px;">
+  </div>
+    <ion-content class="content-stable" on-swipe-left="hideTime = false" on-swipe-right="hideTime = true">
+      <div class="msgContainer content-container">
+        <div ng-repeat="message in messages"
+             class="messages {{message.style}}">
 
-   <div ng-repeat="message in messages"
-           ng-class="{other: message.userId != myId}"
-           class="messages">
+          <div class="message {{message.style}}" ng-class="{'slide-right': hideTime, '': !hideTime}">
+            <span class="msgSpan {{message.style}}">{{ message.text }}</span>
+          </div>
 
-        <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}">
-          <span>{{ message.text }} {{message.sender}}</span>
+          <div class="time {{message.style}}" ng-class="{'slide-right': hideTime, '': !hideTime}">{{message.time}}</div>
+
         </div>
+    </div>
 
-        <div class="time" ng-class="{'slide-right': hideTime, '': !hideTime}">{{message.time}}</div>
+    </ion-content>
 
-
-      </div>
-
- </ion-content>
-  <ion-footer-bar keyboard-attach class="bar-stable item-input-inset">
-   <label class="item-input-wrapper">
-     <input type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" ng-model="data.message" on-focus="inputUp()" on-blur="inputDown()" />
-   </label>
-   <button class="button button-clear" ng-click="sendMessage()">
-     Send
-   </button>
- </ion-footer-bar>
+    <ion-footer-bar keyboard-attach class="bar-stable item-input-inset">
+      <label class="item-input-wrapper">
+        <input type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()" ng-model="data.message" on-focus="inputUp()" on-blur="inputDown()" />
+      </label>
+      <button class="button button-clear" ng-click="sendMessage()">
+        Send
+      </button>
+    </ion-footer-bar>
 </ion-view>
