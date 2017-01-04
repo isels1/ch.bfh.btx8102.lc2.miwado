@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
   if (window.localStorage.getItem("userType") == 1) {
     // Use for testing the development environment
     $scope.user = {
-      username: 'Patient1@midata.coop',
+      username: 'Patient3@midata.coop',
       password: 'Patient123456!',
       server: 'https://test.midata.coop:9000',
       role: 'member'
@@ -81,16 +81,17 @@ angular.module('starter.controllers', [])
   }
 
   $scope.newLogin = function() {
-    var un = document.getElementById("user").value;
-    var pw = document.getElementById("pw").value;
 
-    /*if (un != '' && $scope.user.username !== un) {
-      $scope.user.username = un;
+    var user = document.getElementById("user").value;
+    var pass = document.getElementById("pw").value;
+
+    if (user != '' && $scope.user.username !== user) {
+      $scope.user.username = user;
     }
 
-    if (pw != '' && $scope.user.password !== pw) {
-      $scope.user.password = pw;
-    }*/
+    if (pass != '' && $scope.user.password !== pass) {
+      $scope.user.password = pass;
+    }
 
     ownMidataService.login($scope.user.username,
              $scope.user.password,
@@ -167,9 +168,12 @@ angular.module('starter.controllers', [])
 
       };*/
 
-
       $scope.patients = Contacts.allPats();
 
+      $scope.goToThread = function(pat) {
+        window.localStorage.setItem("selectedPat", JSON.stringify(pat));
+        $state.go('communicationThread');
+      };
 
       //$scope.remove = function(chat) { Chats.remove(chat); };
       $scope.logout = function() {
@@ -190,17 +194,33 @@ angular.module('starter.controllers', [])
 .controller('ChatDetailCtrl', function($scope, $stateParams, Contacts, ownMidataService, $state, $ionicScrollDelegate) {
              var isLoggedIn = ownMidataService.loggedIn();
              if (isLoggedIn) {
-               $scope.me = Contacts.selectPat(window.localStorage.getItem("userName"));
+               $scope.selectedPat = "";
+               //If Pat then selected pat = logged in pat
+               //Else Pat is the selected pat from the list
+               if (window.localStorage.getItem("userType") == 1) {
+                 $scope.selectedPat = Contacts.selectPat(window.localStorage.getItem("userName"));
+                 $scope.myId = $scope.selectedPat.id;
+               } else {
+                 $scope.selectedPat = JSON.parse(window.localStorage.getItem("selectedPat"));
+                 $scope.hp = Contacts.selectHp(window.localStorage.getItem("userName"));
+                 $scope.myId = $scope.hp.id;
+               }
+
                $scope.hideTime = true;
 
-               console.log("Id from me: " + $scope.me.id);
-               console.log("id from my: " + $scope.myId);
+               console.log("Id from selectedPat: " + $scope.selectedPat.id);
+               console.log("Id from myId: " + $scope.myId);
 
                 var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
 
                 $scope.receiveMessage = function() {
                     var res = "Communication";
-                    var params = {};
+                    //var sub = $scope.selectedPat.id; //"Patient/" +
+                    var params = {
+                      //"subject": sub
+                      //"recipient" : [{"reference": sub }]
+                      //"patient": sub
+                    };
                     ownMidataService.search(res, params).then(function(comms) {
                       comms = comms.reverse();
                       console.log(comms);
@@ -211,17 +231,18 @@ angular.module('starter.controllers', [])
                         d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
                         var t = ""
                         if (comms[i].payload == null) {
-                          t = "No Content aviable";
+                          t = "No content aviable";
                         } else {
                           t = comms[i].payload[0].contentString
                         }
 
                         var sId = comms[i].sender.reference;
                         sId = sId.replace("Patient/", "");
+                        sId = sId.replace("Practitioner/", "");
 
                         //if own messages to left site ==> other
                         var style = '';
-                        if ($scope.me.id === sId) {
+                        if ($scope.myId === sId) {
                           style = 'other';
                         } else {
                           style = '';
@@ -242,19 +263,27 @@ angular.module('starter.controllers', [])
                   var d = new Date();
 
                   var category = "FreeText";
-                  var sender = "Patient/" + $scope.me.id;
+
+                  var sender = "";
+                  if (window.localStorage.getItem("userType") == 1) {
+                    sender = "Patient/" + $scope.myId;
+                  } else {
+                    sender = "Practitioner/" + $scope.myId;
+                  }
+
                   var medium = {
                     type: "App",
                     name: "MIWADO"
                   };
-                  var subject = "Patient/" + $scope.me.id;
+
+                  var subject = "Patient/" + $scope.selectedPat.id;
 
                   var communicationResource = {
                     "resourceType" : "Communication",
                     "category" : { category },
                     "sender" : { sender },
                     "status" : "in-progress",
-                    "recipient" : [{"reference":"Patient/" + $scope.me.id, "display": $scope.me.name}],
+                    "recipient" : [{"reference":"Patient/" + $scope.selectedPat.id, "display": $scope.selectedPat.name}],
                     "payload" : [{
                       "contentString" : $scope.data.message
                       //"contentAttachment" : {},

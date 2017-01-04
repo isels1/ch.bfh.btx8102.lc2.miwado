@@ -106,6 +106,14 @@ angular.module('starter.services', [])
         }
       }
       return pat;
+    }, selectHp: function(email) {
+      var res = {};
+      for (var i = 0; i < hp.length; i++) {
+        if (email == hp[i].email) {
+          res = hp[i];
+        }
+      }
+      return res;
     }
   }
 
