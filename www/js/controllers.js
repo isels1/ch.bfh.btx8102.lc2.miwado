@@ -62,7 +62,33 @@ angular.module('starter.controllers', [])
 
 
 .controller('LoginCtrl', function($scope, $timeout, $state, ownMidataService) {
-  if (window.localStorage.getItem("userType") == 1) {
+  if (window.localStorage.getItem("userType") == null){
+    $state.go('chooseType');
+  }
+
+  $scope.input = {
+    user: "",
+    pw: ""
+  }
+
+  $scope.newLogin = function() {
+    if ($scope.input.user != '' && $scope.input.user != $scope.user.username) {
+      $scope.user.username = $scope.input.user;
+    }
+    if ($scope.input.pw != '' && $scope.input.pw != $scope.user.password) {
+      $scope.user.password = $scope.input.pw;
+    }
+
+    ownMidataService.login($scope.user.username,
+             $scope.user.password,
+             $scope.user.role);
+
+   console.log("My username: " + $scope.user.username);
+   window.localStorage.setItem("username", $scope.user.username);
+  }
+
+ if (window.localStorage.getItem("userType") == 1 &&
+     $scope.input.user == "" && $scope.input.pw == "") {
     // Use for testing the development environment
     $scope.user = {
       username: 'Patient3@midata.coop',
@@ -70,32 +96,19 @@ angular.module('starter.controllers', [])
       server: 'https://test.midata.coop:9000',
       role: 'member'
     }
-  } else if (window.localStorage.getItem("userType") == 2) {
-    // Use for testing the development environment
+    $scope.input.user = $scope.user.username;
+    $scope.input.pw = $scope.user.password;
+
+  } else if (window.localStorage.getItem("userType") == 2 &&
+             $scope.input.user == "" && $scope.input.pw == "") {
     $scope.user = {
       username: 'donald.mallard@midata.coop',
       password: 'Hp123456!',
       server: 'https://test.midata.coop:9000',
       role: 'provider'
     }
-  }
-
-  $scope.newLogin = function() {
-
-    var user = document.getElementById("user").value;
-    var pass = document.getElementById("pw").value;
-
-    if (user != '' && $scope.user.username !== user) {
-      $scope.user.username = user;
-    }
-
-    if (pass != '' && $scope.user.password !== pass) {
-      $scope.user.password = pass;
-    }
-
-    ownMidataService.login($scope.user.username,
-             $scope.user.password,
-             $scope.user.role);
+    $scope.input.user = $scope.user.username;
+    $scope.input.pw = $scope.user.password;
   }
 
   // Connect with MIDATA
@@ -103,8 +116,6 @@ angular.module('starter.controllers', [])
   //$scope.hideLogin = "hideLogin";
   var timer = $timeout(function refresh() {
     if (ownMidataService.loggedIn()) {
-      window.localStorage.setItem("userName", $scope.user.username);
-
       // When Patient, go directly to communication thread
       // Else --> Load "contact" List
       if (window.localStorage.getItem("userType") == 1) {
@@ -177,6 +188,7 @@ angular.module('starter.controllers', [])
 
       //$scope.remove = function(chat) { Chats.remove(chat); };
       $scope.logout = function() {
+        window.localStorage.clear();
           ownMidataService.logout();
           $state.go('login');
       };
@@ -192,156 +204,163 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Contacts, ownMidataService, $state, $ionicScrollDelegate) {
-             var isLoggedIn = ownMidataService.loggedIn();
-             if (isLoggedIn) {
-               $scope.selectedPat = "";
-               //If Pat then selected pat = logged in pat
-               //Else Pat is the selected pat from the list
-               if (window.localStorage.getItem("userType") == 1) {
-                 $scope.selectedPat = Contacts.selectPat(window.localStorage.getItem("userName"));
-                 $scope.myId = $scope.selectedPat.id;
-               } else {
-                 $scope.selectedPat = JSON.parse(window.localStorage.getItem("selectedPat"));
-                 $scope.hp = Contacts.selectHp(window.localStorage.getItem("userName"));
-                 //window.localStorage.removeItem("selectedPat");
-                 $scope.myId = $scope.hp.id;
-               }
+   var isLoggedIn = ownMidataService.loggedIn();
+   if (isLoggedIn) {
+     $scope.selectedPat = "";
+     //If Pat then selected pat = logged in pat
+     //Else Pat is the selected pat from the list
+     if (window.localStorage.getItem("userType") == 1) {
+       $scope.selectedPat = Contacts.selectPat(window.localStorage.getItem("username"));
+       $scope.myId = $scope.selectedPat.id;
+     } else {
+       $scope.selectedPat = JSON.parse(window.localStorage.getItem("selectedPat"));
+       $scope.hp = Contacts.selectHp(window.localStorage.getItem("username"));
+       //window.localStorage.removeItem("selectedPat");
+       $scope.myId = $scope.hp.id;
+     }
 
-               $scope.hideTime = true;
+     $scope.hideTime = true;
 
-               console.log("Id from selectedPat: " + $scope.selectedPat.id);
-               console.log("Id from myId: " + $scope.myId);
+     console.log("Id from selectedPat: " + $scope.selectedPat.id);
+     console.log("Id from myId: " + $scope.myId);
 
-                var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
+      var isIOS = ionic.Platform.isWebView() && ionic.Platform.isIOS();
 
-                $scope.receiveMessage = function() {
-                    var res = "Communication";
-                    //var sub = $scope.selectedPat.id; //"Patient/" +
-                    var params = {
-                      //"subject": sub
-                      //"recipient" : [{"reference": sub }]
-                      //"patient": sub
-                    };
-                    ownMidataService.search(res, params).then(function(comms) {
-                      comms = comms.reverse();
-                      console.log(comms);
-                      $scope.messages = [];
+      $scope.receiveMessage = function() {
+          var res = "Communication";
+          //var sub = $scope.selectedPat.id; //"Patient/" +
+          var params = {
+            //"subject": sub
+            //"recipient" : [{"reference": sub }]
+            //"patient": sub
+          };
+          ownMidataService.search(res, params).then(function(comms) {
+            comms = comms.reverse();
+            //console.log(comms);
+            $scope.messages = [];
 
-                      for (var i = 0; i < comms.length; i++) {
-                        var d = new Date(comms[i].sent)
-                        d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
-                        var t = ""
-                        if (comms[i].payload == null) {
-                          t = "No content aviable";
-                        } else {
-                          t = comms[i].payload[0].contentString
-                        }
+            for (var i = 0; i < comms.length; i++) {
+              var d = new Date(comms[i].sent)
+              d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
+              var t = ""
+              if (comms[i].payload == null) {
+                t = "No content aviable";
+              } else {
+                t = comms[i].payload[0].contentString
+              }
 
-                        //Sender ID
-                        var sId = comms[i].sender.reference;
-                        sId = sId.replace("Patient/", "");
-                        sId = sId.replace("Practitioner/", "");
+              //Sender ID
+              var sId = comms[i].sender.reference;
+              sId = sId.replace("Patient/", "");
+              sId = sId.replace("Practitioner/", "");
 
-                        console.log("sender ID: " + sId);
+              //console.log("sender ID: " + sId);
 
-                        //if own messages to left site ==> other
-                        var style = '';
-                        if ($scope.myId === sId) {
-                          style = 'other';
-                        } else {
-                          style = '';
-                        }
+              //if own messages to left site ==> other
+              var style = '';
+              if ($scope.myId === sId) {
+                style = 'other';
+              } else {
+                style = '';
+              }
 
-                        //Rec ID
-                        var rId = comms[i].recipient[0].reference;
-                        rId = rId.replace("Patient/", "");
-                        console.log("recipient id: " + rId);
-                        if (window.localStorage.getItem("userType") != 1) {
-                          if (rId !== $scope.selectedPat.id) {
-                            continue;
-                          }
-                        }
-
-                        $scope.messages.push({
-                            userId: sId,
-                            sender: comms[i].sender.display,
-                            text: t,
-                            time: d,
-                            style: style
-                          });
-                      }
-
-                      $scope.refreshItems();
-                    });
+              //Rec ID
+              var rId = comms[i].recipient[0].reference;
+              rId = rId.replace("Patient/", "");
+              //console.log("recipient id: " + rId);
+              if (window.localStorage.getItem("userType") != 1) {
+                if (rId !== $scope.selectedPat.id) {
+                  continue;
                 }
+              }
 
-                $scope.sendMessage = function() {
-                  var d = new Date();
-
-                  var category = "FreeText";
-
-                  var sender = "";
-                  if (window.localStorage.getItem("userType") == 1) {
-                    sender = "Patient/" + $scope.myId;
-                  } else {
-                    sender = "Practitioner/" + $scope.myId;
-                  }
-
-                  var medium = {
-                    type: "App",
-                    name: "MIWADO"
-                  };
-
-                  var subject = "Patient/" + $scope.selectedPat.id;
-
-                  var communicationResource = {
-                    "resourceType" : "Communication",
-                    "category" : { category },
-                    "sender" : { sender },
-                    "status" : "in-progress",
-                    "recipient" : [{"reference":"Patient/" + $scope.selectedPat.id, "display": $scope.selectedPat.name}],
-                    "payload" : [{
-                      "contentString" : $scope.data.message
-                      //"contentAttachment" : {},
-                      //"contentReference" : {}
-                    }],
-                    "medium" : [{ medium }],
-                    "status" : "in-progress", // in-progress | completed | suspended | rejected | failed
-                    "encounter" : {},
-                    "sent" : d,
-                    //"received" : "<dateTime>", // When received
-                    "reason" : [{}],
-                    "subject" : { subject },
-                    "requestDetail" : {}
-                  }
-
-                  ownMidataService.saveComm(communicationResource).then(function(e){
-                      console.log('Resource Created: ' + e);
-                      $scope.receiveMessage();
-                      $ionicScrollDelegate.scrollBottom(true);
-                  });
-
-                  delete $scope.data.message;
-                };
-
-                $scope.inputDown = function() {
-                if (isIOS) $scope.data.keyboardHeight = 0;
-                  $ionicScrollDelegate.resize();
-                };
-
-                $scope.closeKeyboard = function() {
-                  // cordova.plugins.Keyboard.close();
-                };
-
-                $scope.data = {};
-                $scope.messages = [];
-
-                $scope.receiveMessage();
-                $scope.logout = function() {
-                   ownMidataService.logout();
-                   $state.go('login');
-               };
-            } else {
-             $state.go('login')
+              $scope.messages.push({
+                  userId: sId,
+                  sender: comms[i].sender.display,
+                  text: t,
+                  time: d,
+                  style: style
+                });
             }
+
+            $scope.refreshItems();
+          });
+      }
+
+      $scope.sendMessage = function() {
+        var d = new Date();
+
+        var category = "FreeText";
+
+        var sender = "";
+        if (window.localStorage.getItem("userType") == 1) {
+          sender = "Patient/" + $scope.myId;
+        } else {
+          sender = "Practitioner/" + $scope.myId;
+        }
+
+        var medium = {
+          type: "App",
+          name: "MIWADO"
+        };
+
+        var subject = "Patient/" + $scope.selectedPat.id;
+
+        var communicationResource = {
+          "resourceType" : "Communication",
+          "category" : { category },
+          "sender" : { sender },
+          "status" : "in-progress",
+          "recipient" : [{"reference":"Patient/" + $scope.selectedPat.id, "display": $scope.selectedPat.name}],
+          "payload" : [{
+            "contentString" : $scope.data.message
+            //"contentAttachment" : {},
+            //"contentReference" : {}
+          }],
+          "medium" : [{ medium }],
+          "status" : "in-progress", // in-progress | completed | suspended | rejected | failed
+          "encounter" : {},
+          "sent" : d,
+          //"received" : "<dateTime>", // When received
+          "reason" : [{}],
+          "subject" : { subject },
+          "requestDetail" : {}
+        }
+
+        ownMidataService.saveComm(communicationResource).then(function(e){
+            //console.log('Resource Created: ' + e);
+            $scope.doRefresh();
+        });
+
+        delete $scope.data.message;
+      };
+
+      $scope.inputDown = function() {
+      if (isIOS) $scope.data.keyboardHeight = 0;
+        $ionicScrollDelegate.resize();
+      };
+
+      $scope.closeKeyboard = function() {
+        // cordova.plugins.Keyboard.close();
+      };
+
+      $scope.data = {};
+      $scope.messages = [];
+
+      $scope.receiveMessage();
+      $scope.logout = function() {
+         window.localStorage.clear();
+         ownMidataService.logout();
+         $state.go('login');
+     };
+
+     $scope.doRefresh = function() {
+       $scope.receiveMessage();
+       $scope.$broadcast('scroll.refreshComplete');
+       $ionicScrollDelegate.scrollBottom(true);
+     };
+
+  } else {
+   $state.go('login')
+  }
 });
