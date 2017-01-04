@@ -7,17 +7,10 @@ import { fromFhir } from './resources/registry';
 
 export interface User {
     name: string;
+    id: string;
 }
 
-/**
- * Usage:
- *
- *     let auth = new MidataAuth('demo.midata.coop');
- *     auth.login({
- *         username: 'userxy',
- *         password: 'somepassword'
- *     }).then(...)
- */
+
 export class Midata {
 
     private _authToken: string;
@@ -29,7 +22,19 @@ export class Midata {
      */
     constructor(private _host: string,
                 private _appName: string,
-                private _secret: string) {}
+                private _secret: string) {
+        // Check if there is previously saved login data that was
+        // put there before the last page refresh. In case there is,
+        // load it.
+        if (window.localStorage) {
+            let value = localStorage.getItem('midataLoginData');
+            let data = JSON.parse(value);
+            if (data) {
+                this._setLoginData(
+                    data.authToken, data.refreshToken, data.user);
+            }
+        }
+    }
 
     /**
      * If the user is logged in already.
@@ -63,12 +68,15 @@ export class Midata {
     }
 
     /**
-     * Destroy the authenication token.
+     * Destroy all authenication information.
      */
     logout() {
         this._user = undefined;
         this._refreshToken = undefined;
         this._authToken = undefined;
+        if (window.localStorage) {
+            localStorage.removeItem('midataLoginData');
+        }
     }
 
     /**
@@ -108,11 +116,11 @@ export class Midata {
         })
         .then(response => {
             let body: AuthResponse = response.body;
-            this._authToken = body.authToken;
-            this._refreshToken = body.refreshToken;
-            this._user = {
+            let user = {
+                id: body.owner,
                 name: username
             };
+            this._setLoginData(body.authToken, body.refreshToken, user);
             return body;
         })
         .catch(error => {
@@ -120,6 +128,23 @@ export class Midata {
         });
 
         return result;
+    }
+
+    /**
+     * Set login-specific properties. This method should be called either during
+     * startup or when the login method is called explicitly.
+     */
+    private _setLoginData(authToken: string, refreshToken: string, user: User) {
+        this._authToken = authToken;
+        this._refreshToken = refreshToken;
+        this._user = user;
+        if (window.localStorage) {
+            localStorage.setItem('midataLoginData', JSON.stringify({
+                authToken: authToken,
+                refreshToken: refreshToken,
+                user: user
+            }));
+        }
     }
 
     /**
@@ -172,7 +197,12 @@ export class Midata {
             }
         })
         .catch((response: any) => {
-            if (response.status === 400) {
+            if (response.status === 401) {
+                // TODO: Try to login with refresh token if there is one and
+                // retry to save resource. Only if it still fails proceed with logout.
+                this.logout();
+            }
+            else if (response.status === 400) {
                 return Promise.reject(
                     'Resource could not be parsed or failed basic FHIR validation rules.');
             }
@@ -182,9 +212,9 @@ export class Midata {
             }
             else if (response.status === 422) {
                 return Promise.reject(
-                    `The proposed resource violated applicable FHIR profiles
-                    or server business rules. More details should be contained
-                    in the error message.`);
+                    `The proposed resource violated applicable FHIR profiles or server business rules.
+More details should be contained in the error message:
+${response.body}`);
             }
             else if (response.status === 500) {
                 return Promise.reject(response.body);
@@ -201,7 +231,7 @@ export class Midata {
     private _create = (fhirObject: any) => {
         let url = `${this._host}/fhir/${fhirObject.resourceType}`;
         return apiCall({
-            jsonBody: false,
+            jsonBody: false,  // needs to be false since no json is returned
             url: url,
             method: 'POST',
             headers: {
@@ -263,13 +293,31 @@ export class Midata {
         return result;
     };
 
+    // searchAll(params: any) {
+    //     let baseUrl = `${this._host}/fhir`;
+    //     return this._search(baseUrl, params);
+    // }
+
+    // searchCompartment(compartment: string, id: string, params: any = {}) {
+    //     let baseUrl = `${this._host}/fhir/${compartment}/${id}`;
+    // }
+
+    // searchType(resourceType: string, params: any = {}) {
+    //     return this.search(resourceType, params);
+    // }
+
     search(resourceType: string, params: any = {}) {
+        let baseUrl = `${this._host}/fhir/${resourceType}`;
+        return this._search(baseUrl, params);
+    }
+
+    private _search(baseUrl: string, params: any = {}) {
         let queryParts = Object.keys(params).map(key => {
             return key + '=' + params[key]
         });
         let query = queryParts.join('&');
         query = query && `?${query}` || '';
-        let url = `${this._host}/fhir/${resourceType}${query}`;
+        let url = baseUrl + query;
         return apiCall({
             url: url,
             method: 'GET',
@@ -291,6 +339,12 @@ export class Midata {
             }
         })
         .catch((response: any) => {
+            if (response.status === 401) {
+                // TODO: Try to login with refresh token if there is one and
+                // retry the search.. Only if it still fails proceed with logout.
+                this.logout();
+                return Promise.reject(response);
+            }
             return Promise.reject(response);
         });
     }

@@ -5,13 +5,15 @@ $stable:                          #f8f8f8 !default;
 }
 
 .contacImg {
-  background: rgba(75, 224, 255, 0.5);
+  background: rgba(75, 224, 255, 0.25);
   z-index: 0;
 }
 
-.msgContainer {
-  margin-top: 71px;
+.content-stable {
   z-index: -1;
+  border: 1px solid #ccc!important;
+  border-radius: 16px!important;
+  margin-top: 71px;
 }
 
 .messages.other {

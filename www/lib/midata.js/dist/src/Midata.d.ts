@@ -3,16 +3,8 @@ import { Promise } from 'es6-promise';
 import { Resource } from './resources';
 export interface User {
     name: string;
+    id: string;
 }
-/**
- * Usage:
- *
- *     let auth = new MidataAuth('demo.midata.coop');
- *     auth.login({
- *         username: 'userxy',
- *         password: 'somepassword'
- *     }).then(...)
- */
 export declare class Midata {
     private _host;
     private _appName;
@@ -44,7 +36,7 @@ export declare class Midata {
      */
     readonly user: User;
     /**
-     * Destroy the authenication token.
+     * Destroy all authenication information.
      */
     logout(): void;
     /**
@@ -60,6 +52,11 @@ export declare class Midata {
      *         will be a rejected promise containing the error message.
      */
     login(username: string, password: string, role?: UserRole): Promise<any>;
+    /**
+     * Set login-specific properties. This method should be called either during
+     * startup or when the login method is called explicitly.
+     */
+    private _setLoginData(authToken, refreshToken, user);
     /**
      * Convenience method to create or update FHIR resources of the MIDATA
      * platform.
@@ -86,4 +83,5 @@ export declare class Midata {
      */
     private _refresh;
     search(resourceType: string, params?: any): Promise<{}>;
+    private _search(baseUrl, params?);
 }
