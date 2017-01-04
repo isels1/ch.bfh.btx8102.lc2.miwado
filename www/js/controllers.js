@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
   if (window.localStorage.getItem("userType") == 1) {
     // Use for testing the development environment
     $scope.user = {
-      username: 'Patent2@midata.coop',
+      username: 'Patient3@midata.coop',
       password: 'Patient123456!',
       server: 'https://test.midata.coop:9000',
       role: 'member'
@@ -237,9 +237,12 @@ angular.module('starter.controllers', [])
                           t = comms[i].payload[0].contentString
                         }
 
+                        //Sender ID
                         var sId = comms[i].sender.reference;
                         sId = sId.replace("Patient/", "");
                         sId = sId.replace("Practitioner/", "");
+
+                        console.log("sender ID: " + sId);
 
                         //if own messages to left site ==> other
                         var style = '';
@@ -247,6 +250,16 @@ angular.module('starter.controllers', [])
                           style = 'other';
                         } else {
                           style = '';
+                        }
+
+                        //Rec ID
+                        var rId = comms[i].recipient[0].reference;
+                        rId = rId.replace("Patient/", "");
+                        console.log("recipient id: " + rId);
+                        if (window.localStorage.getItem("userType") != 1) {
+                          if (rId !== $scope.selectedPat.id) {
+                            continue;
+                          }
                         }
 
                         $scope.messages.push({
@@ -257,6 +270,8 @@ angular.module('starter.controllers', [])
                             style: style
                           });
                       }
+
+                      $scope.refreshItems();
                     });
                 }
 
