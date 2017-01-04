@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
   if (window.localStorage.getItem("userType") == 1) {
     // Use for testing the development environment
     $scope.user = {
-      username: 'Patient3@midata.coop',
+      username: 'Patent2@midata.coop',
       password: 'Patient123456!',
       server: 'https://test.midata.coop:9000',
       role: 'member'
@@ -203,6 +203,7 @@ angular.module('starter.controllers', [])
                } else {
                  $scope.selectedPat = JSON.parse(window.localStorage.getItem("selectedPat"));
                  $scope.hp = Contacts.selectHp(window.localStorage.getItem("userName"));
+                 //window.localStorage.removeItem("selectedPat");
                  $scope.myId = $scope.hp.id;
                }
 
