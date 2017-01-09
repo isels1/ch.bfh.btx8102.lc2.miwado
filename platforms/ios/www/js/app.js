@@ -5,13 +5,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.ownServices', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
 
 .constant('APPNAME', 'MIWADO')
 .constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $location, $rootScope, ownMidataService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,15 +19,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
 
+      //TESTITEST TESTITEST
+      /*cordova.plugins.backgroundMode.setDefaults({
+          title:  'MIWADO',
+          text:   'Checking for new messages'
+      });*/
+
+      cordova.plugins.backgroundMode.enable();
+
+      cordova.plugins.backgroundMode.onactivate = function () {
+        // Set an interval of 5 sek (5000 milliseconds)
+        setInterval(function () {
+          if (ownMidataService.loggedIn()) {
+            var oldMsgs = window.localStorage.getItem("msgAmount");
+            var res = "Communication";
+            //var sub = $scope.selectedPat.id; //"Patient/" +
+            var params = {};
+            ownMidataService.search(res, params).then(function(comms) {
+              if (typeof oldMsgs !== 'undefined') {
+                if (oldMsgs < comms.length) {
+                  var newMsgs = comms.length - oldMsgs;
+                  alert("You have " + newMsgs + " new messages");
+                }
+              }
+              window.localStorage.setItem("msgAmount", comms.length);
+            });
+          }
+        }, 5000);
+      }
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-                       
-                       if (window.Worker) {
-                        //var myWorker = new Worker('worker.js');
-                       }
+
+    //Maybe multi threading
+   if (window.Worker) {
+    //var myWorker = new Worker('worker.js');
+   }
+
+   //$location.path('/');
+   //$rootScope.$apply();
   });
 })
 
@@ -47,91 +79,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/login.html',
                controller: 'LoginCtrl'
         })
-        .state('chats', {
-               url:'/chats',
-               templateUrl: 'templates/chats.html',
+        .state('threadOverview', {
+               url:'/threadOverview',
+               templateUrl: 'templates/threadOverview.html',
                controller: 'ChatsCtrl'
                })
-        .state('chat-detail', {
-               url: '/chats/:chatId',
-               templateUrl: 'templates/chat-detail.html',
+        .state('communicationThread', {
+               url: '/communicationThread',
+               templateUrl: 'templates/communicationThread.html',
                controller: 'ChatDetailCtrl'
                })
+         .state('dash', {
+                url: '/dash',
+                templateUrl: 'templates/tab-dash.html',
+                controller: 'DashCtrl'
+                })
         $urlRouterProvider.otherwise("/");
         });
-
-/*.directive('hideTabs', function($rootScope) {
-           return {
-           restrict: 'A',
-           link: function($scope, $el) {
-           $rootScope.hideTabs = 'tabs-item-hide';
-           $scope.$on('$destroy', function() {
-                      $rootScope.hideTabs = '';
-                      });
-           }
-           };
-           })
- */
-
-  // setup an abstract state for the tabs directive
-/*    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-
-  // Each tab has its own nav history stack:
-
-  .state('tab.login' , {
-         url: '/login',
-         views: {
-         'tab-login': {
-         templateUrl: 'templates/tab-login.html',
-         controller: 'LoginCtrl'
-         }
-         }
-   })
-        
-  .state('tab.dash', {
-    url: '/dash',
-    views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
-
-}); */

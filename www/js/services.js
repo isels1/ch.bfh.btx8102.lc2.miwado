@@ -155,4 +155,11 @@ angular.module('starter.services', [])
       });
     }
   }
+})
+.directive('myPostRepeatDirective', function() {
+  return function(scope, element, attrs) {
+    if (scope.$last){
+      scope.goToBottom();
+    }
+  }
 });

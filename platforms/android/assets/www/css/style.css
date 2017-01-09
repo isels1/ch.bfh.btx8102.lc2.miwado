@@ -33,6 +33,12 @@
     vertical-align: top;
 }
 
+.login-list input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-width: 2px;
+}
+
 .login-img {
     width: 100%;
     max-width: 800px;

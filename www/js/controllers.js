@@ -1,6 +1,9 @@
 angular.module('starter.controllers', [])
 
-.controller('TypeCtrl', function($scope, $timeout, $state, $compile) {
+.controller('DashCtrl', function  ($scope, $state) {
+})
+
+.controller('TypeCtrl', function($scope, $timeout, $state, $compile, ownMidataService) {
   //DELETE LOCAL STORAGE FOR TEST USE
   window.localStorage.setItem("userType", "");
 
@@ -34,9 +37,6 @@ angular.module('starter.controllers', [])
         locationDiv[1].style.height = "";
       }
     }
-
-
-
 
   $scope.selectedOption = true;
 
@@ -241,8 +241,26 @@ angular.module('starter.controllers', [])
 
             for (var i = 0; i < comms.length; i++) {
               var d = new Date(comms[i].sent)
-              d = d.toLocaleTimeString().replace(/:\d+ /, ' ');
-              var t = ""
+              var day = d.getUTCDate();
+              var month = d.getUTCMonth() + 1;
+              var years = d.getUTCFullYear();
+              var hours = d.getUTCHours();
+              var minutes = d.getUTCMinutes();
+
+              if (day.toString().length == 1) {
+                day = "0" + day;
+              }
+              if (month.toString().length == 1) {
+                month = "0" + month;
+              }
+              if (hours.toString().length == 1) {
+                hours = "0" + hours;
+              }
+              if (minutes.toString().length == 1) {
+                minutes = "0" + minutes;
+              }
+
+              var t = "";
               if (comms[i].payload == null) {
                 t = "No content aviable";
               } else {
@@ -258,10 +276,14 @@ angular.module('starter.controllers', [])
 
               //if own messages to left site ==> other
               var style = '';
+              var s = "";
+
               if ($scope.myId === sId) {
                 style = 'other';
+                s = '';
               } else {
                 style = '';
+                s = comms[i].sender.display;
               }
 
               //Rec ID
@@ -276,13 +298,12 @@ angular.module('starter.controllers', [])
 
               $scope.messages.push({
                   userId: sId,
-                  sender: comms[i].sender.display,
+                  sender: s,
                   text: t,
-                  time: d,
+                  time: day + "." + month + "." + years + " " + hours + ":" + minutes,
                   style: style
                 });
             }
-
             $scope.refreshItems();
           });
       }
@@ -329,6 +350,8 @@ angular.module('starter.controllers', [])
 
         ownMidataService.saveComm(communicationResource).then(function(e){
             //console.log('Resource Created: ' + e);
+            var oldMsgs = window.localStorage.getItem("msgAmount");
+            window.localStorage.setItem("msgAmount", oldMsgs + 1);
             $scope.doRefresh();
         });
 
@@ -356,6 +379,11 @@ angular.module('starter.controllers', [])
 
      $scope.doRefresh = function() {
        $scope.receiveMessage();
+       $scope.$broadcast('scroll.refreshComplete');
+       $ionicScrollDelegate.scrollBottom(true);
+     };
+
+     $scope.goToBottom = function() {
        $scope.$broadcast('scroll.refreshComplete');
        $ionicScrollDelegate.scrollBottom(true);
      };

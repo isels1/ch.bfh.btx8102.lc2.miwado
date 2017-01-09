@@ -6,7 +6,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 .controller('I4MIMidataLoginController', ['$scope','I4MIMidataService','$timeout',function($scope, I4MIMidataService, $timeout) {
 	$scope.currentUser = I4MIMidataService.currentUser();
 	$scope.loggedIn = I4MIMidataService.loggedIn();
-	
+
 	$scope.login = function(user) {
 		I4MIMidataService.auth(user).then(function(credentials) {
 			if ( credentials.authorized ) {
@@ -35,13 +35,13 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			}
 		});
 	}
-	
+
 	$scope.logout = function() {
 		I4MIMidataService.logout();
 		$scope.loggedIn = false;
 		$scope.currentUser = '';
 	}
-	
+
 	$scope.userFields = [
 		{
 			key: 'username',
@@ -86,14 +86,14 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			inputDate: $scope.datetime
 		});
 	}
-	
+
 	var timePickerCallback = function(time) {
 		time = new Date(time*1000);
 		$scope.datetime.setHours(time.getUTCHours());
 		$scope.datetime.setMinutes(time.getUTCMinutes());
 		$scope.tpo.inputEpochTime = $scope.datetime.getHours()*60*60 + $scope.datetime.getMinutes()*60
 	}
-	
+
 	var clear = function() {
 		$scope.model = {};
 		$scope.datetime = new Date();
@@ -104,13 +104,13 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		}
 	}
 	clear();
-	
+
 	$scope.tpo = {
 		callback: timePickerCallback,
 		inputEpochTime: $scope.datetime.getHours()*60*60 + $scope.datetime.getMinutes()*60,
 		step: 5
 	}
-	
+
 	var setValue = function(tmpEntry, entry) {
 		var path = tmpEntry.$set.split('.');
 		var set = [tmpEntry.$scheme];
@@ -123,7 +123,8 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		}
 		return tmpEntry.$scheme;
 	}
-	
+
+//ADD ENTRY
 	$scope.add = function(entry) {
 		var midataEntry = [];
 		if ( $scope.groupEntry === 'true' || $scope.groupEntry === true ) {
@@ -228,7 +229,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			return d;
 		}
 	}
-	
+
 	var options = {
 		chart: {
 			type: $scope.type || 'lineChart',
@@ -261,7 +262,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		}
 	}
 	$scope.options = options;
-	
+
 	$scope.$watch('records', function(){
 		var groups = {};
 		for ( index in $scope.records ) {
@@ -270,7 +271,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			if ( isNaN(record.data.valueQuantity.value) ) continue;
 			if ( !record.data.effectiveDateTime ) continue;
 			if ( record.data.status === 'entered-in-error' ) continue;
-			
+
 			var key = record.name || 'records';
 			if ( !groups[key] ) {
 				groups[key] = {
@@ -296,7 +297,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			group.count += 1;
 			groups[key].data[timekey] = group;
 		}
-		
+
 		var data = [];
 		for ( key in groups ) {
 			if ( !groups.hasOwnProperty(key) ) continue;
@@ -342,7 +343,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			});
 			data.push(set);
 		}
-		
+
 		$scope.data = data;
 	});
 }])
@@ -363,7 +364,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		controller : "@",
 		name: "controllerName",
 		link: function(scope, element, attrs) {
-			
+
 		},
 		templateUrl: 'i4mi.midata.chart.html'
 	};
@@ -460,7 +461,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			$ionicPlatform.ready(function(){
 			scope.data = scope.data || {};
 			scope.saved = true;
-			
+
 			I4MIHealthKitService.readDateOfBirth().then(function(entry){
 				scope.data.dateofbirth = entry;
 				if ( typeof scope.update === 'function' && Object.keys(scope.data).length === 5 ) {
@@ -499,7 +500,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			},function(){
 				scope.data.height = {unit:'cm'};
 			});
-			
+
 			scope.blur = function(data) {
 				if ( scope.autosave+'' === 'true' ) {
 					for ( var key in data ) {
@@ -515,7 +516,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 					}
 				}
 			}
-			
+
 			scope.change = function(data) {
 				var hasChanged = false;
 				for ( var key in data ) {
@@ -527,7 +528,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 				}
 				scope.saved = !hasChanged;
 			}
-			
+
 			scope.save = function(data) {
 				scope.saved = true;
 				for ( var key in data ) {
@@ -610,7 +611,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		for (var prop in scope) {
 			if (!scope.hasOwnProperty(prop)) continue;
 			modalScope[prop] = scope[prop];
-		}	
+		}
 
 		$ionicModal.fromTemplateUrl(templateUrl, {
 			scope: modalScope,
@@ -689,11 +690,11 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 	} else {
 		encryptionKey = '1234';
 	}
-	
+
 	if ( !$localStorage.settings ) {
 		$localStorage.settings = {};
 	}
-	
+
 	return {
 		set: function(key, value) {
 			$localStorage.settings[key] = $crypto.encrypt(JSON.stringify(value), encryptionKey);
@@ -709,7 +710,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 
 .service('I4MICcdaService',['$q','$http',function($q,$http){
 	var self = this;
-	
+
 	var importRecord = function(url){
 		var deferred = $q.defer();
 		$http({
@@ -723,7 +724,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		});
 		return deferred.promise;
 	}
-	
+
 	return {
 		importRecord: importRecord
 	}
@@ -919,7 +920,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 .service('I4MIMidataService', ['I4MIModalService','I4MISettingsService','$q','$http','$crypto','APPNAME','APPSECRET',function(I4MIModalService,I4MISettingsService,$q,$http,$crypto,APPNAME,APPSECRET){
 	var appname = APPNAME;
 	var appsecr = APPSECRET;
-	
+
 	var setMidata = function(value) {
 		var midataSetting = {
 			encrypted: $crypto.encrypt(JSON.stringify(value),appsecr)
@@ -936,16 +937,16 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			}
 		}
 		return {};
-		
+
 	}
-	
+
 	var midata = getMidata();
-	
+
 	var logout = function() {
 		midata = {};
 		setMidata({});
 	}
-	
+
 	var auth = function(user) {
 		var data = {
 			appname: appname,
@@ -956,6 +957,9 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		} else {
 			data.username = user.username;
 			data.password = user.password;
+
+                               //NEW
+                               data.role = user.role;
 		}
 		user.server = 'https://' + user.server.replace(/^https*:\/\//, '');
 		return $q(function(resolve, reject){
@@ -990,19 +994,19 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			});
 		});
 	}
-	
+
 	if ( midata.credentials && midata.credentials.refreshToken !== '' ) {
 		auth({
 			refreshToken: midata.credentials.refreshToken,
 			username: midata.username,
 			server: midata.server
 		}).then(function(credentials){
-			
+
 		},function(reason){
-			
+
 		});
 	}
-	
+
 	var push = function(action, entries, index) {
 		return $q(function(resolve, reject){
 			if ( entries.length === 0 ) {
@@ -1011,7 +1015,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 					success: false
 				});
 			}
-			
+
 			var data = entries[index];
 			if ( typeof data.data === 'object' ) {
 				data.data = JSON.stringify(data.data);
@@ -1045,7 +1049,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			});
 		});
 	};
-	
+
 	return {
 		auth: auth,
 		login: function(username, password, server) {
@@ -1081,11 +1085,12 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 		all: function() {
 			return [];
 		},
+		//isels1 search is important
 		search: function(fields,properties) {
 			fields = fields || ['data','name'];
 			fields.push('_id','version');
 			properties = properties || {};
-			
+
 			return $q(function(resolve, reject){
 				$http({
 					method: 'POST', url: midata.server + '/v1/records/search',
@@ -1135,7 +1140,7 @@ angular.module('i4mi', ['i4mi.templates','i4mi.defaults','ionic','ionic-datepick
 			return push('update', entry, 0);
 		},
 		remove: function(entry) {
-			
+
 		},
 		newEntry: function(model,schema,fhir,options){
 			options = options || {};

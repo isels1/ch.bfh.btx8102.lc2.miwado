@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/Work/Documents/_LC2/01_Source/ch.bfh.btx8102.lc2.miwado/platforms/android/CordovaLib/src/main/shaders"/></dataSet><dataSet config="release"><source path="/Users/Work/Documents/_LC2/01_Source/ch.bfh.btx8102.lc2.miwado/platforms/android/CordovaLib/src/release/shaders"/></dataSet></merger>

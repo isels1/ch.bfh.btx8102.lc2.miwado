@@ -1,0 +1,19 @@
+<ion-view view-title="My Patients" cache-view="false">
+    <ion-nav-buttons side="right">
+        <button class="button" ng-click="logout()">
+            Logout
+        </button>
+    </ion-nav-buttons>
+  <ion-content class="bg-container" scroll="true">
+     <div class="content-container">
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="pat in patients" type="item-text-wrap" ng-click="goToThread(pat)">
+        <img ng-src="{{pat.face}}">
+        <h2>{{pat.name}}</h2>
+        <!--<p>{{chat.lastText}}</p>-->
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+    </div>
+  </ion-content>
+</ion-view>

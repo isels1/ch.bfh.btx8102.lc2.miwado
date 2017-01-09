@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $location, $rootScope, ownMidataService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,15 +19,53 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
 
+      //TESTITEST TESTITEST
+      /*cordova.plugins.backgroundMode.setDefaults({
+          title:  'MIWADO',
+          text:   'Checking for new messages'
+      });*/
+
+      cordova.plugins.backgroundMode.enable();
+
+      cordova.plugins.backgroundMode.onactivate = function () {
+        // Set an interval of 5 sek (5000 milliseconds)
+        setInterval(function () {
+          if (ownMidataService.loggedIn()) {
+            var oldMsgs = window.localStorage.getItem("msgAmount");
+            var res = "Communication";
+            //var sub = $scope.selectedPat.id; //"Patient/" +
+            var params = {};
+            ownMidataService.search(res, params).then(function(comms) {
+              if (typeof oldMsgs !== 'undefined') {
+                if (oldMsgs < comms.length) {
+                  var newMsgs = comms.length - oldMsgs;
+                  LocalNotifications.schedule({
+                    id: 1,
+                    text: "You have " + newMsgs + " new messages",
+                    title: 'MIWADO',
+                    sound: isAndroid? 'file://sound.mp3': 'file://beep.caf',
+                    icon: '../img/logo try.png'
+                  });
+                }
+              }
+              window.localStorage.setItem("msgAmount", comms.length);
+            });
+          }
+        }, 5000);
+      }
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
 
-                       if (window.Worker) {
-                        //var myWorker = new Worker('worker.js');
-                       }
+    //Maybe multi threading
+   if (window.Worker) {
+    //var myWorker = new Worker('worker.js');
+   }
+
+   //$location.path('/');
+   //$rootScope.$apply();
   });
 })
 
@@ -57,5 +95,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/communicationThread.html',
                controller: 'ChatDetailCtrl'
                })
+         .state('dash', {
+                url: '/dash',
+                templateUrl: 'templates/tab-dash.html',
+                controller: 'DashCtrl'
+                })
         $urlRouterProvider.otherwise("/");
         });

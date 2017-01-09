@@ -1,0 +1,72 @@
+<!--
+  This template will be used in the chat as a guidline for sending an appointment request
+  to the Patient.
+-->
+<link href="css/textTemplates.css" rel="stylesheet">
+<div class="tempelateTermin">
+  <!--Header-->
+  <div class="row ">
+    <label class="textHeader">Guten Tag</label>
+    <select class="selectGender">
+      <option>---</option>
+      <option>Herr</option>
+      <option>Frau</option>
+    </select>
+    <input type="text" class="headerNameField" placeholder="Patientenname">
+  </div>
+
+  <!--Body-->
+  <div class="row myRow ">
+    <label class="textBody">
+      Sie haben am
+      <input type="date" class="selectDate">
+      <label class="textBody fixer1">
+        um
+      </label>
+      <input type="time" class="selectTime">
+    </label>
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+      einen Termin in der Abteilung
+      <select class="selectSection">
+        <option>---</option>
+        <option>Diabetologie</option>
+        <option>Endokrinologie</option>
+        <option>Ernährungsmedizin</option>
+        <option>Metabolismus</option>
+      </select>
+      .
+    </label>
+  </div>
+    <div class='row myRow locationVisibile' id="location">
+      <label class='textBody'>
+       Wir befinden uns in der Kinderklinik, Eingang 31, Stockwerk G
+      </label>
+    </div>
+  <div class="row myRow">
+    <label class="textBody">
+      Bitte nehmen Sie ihre Medikamentenliste und Versichertenkarte mit. Absage des Termins können bis
+    </label>
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+      24 Stunden vor dem Termin erfolgen. Absagen welche später erfolgen müssen wir Ihnen leider verrechnen.
+    </label>
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+      Sie erreichen uns unter 031 632 40 70.
+    </label>
+  </div>
+  Ort einblenden
+  <input type="checkbox"  class="sexyCheckBox" ng-model="status" ng-change="addLocation()" id="myCheck" >
+
+  <!--Footer-->
+  <div class="row ">
+    <label class="textFooter">Mit freundlichen Grüssen</label>
+  </div>
+  <div class="row">
+    <input type="text" class="senderName" placeholder="Absendername">
+  </div>
+</div>
