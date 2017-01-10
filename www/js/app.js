@@ -5,13 +5,13 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.ownServices', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.ownServices', 'ionic-datepicker', 'ionic-timepicker', 'formlyIonic', 'nvd3', 'i4mi','jsonFormatter', 'ngCordova', 'ngCordova.plugins'])
 
 .constant('APPNAME', 'MIWADO')
 .constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
-.run(function($ionicPlatform, $location, $rootScope, ownMidataService) {
+.run(function($ionicPlatform, $location, $rootScope, ownMidataService, $cordovaLocalNotification) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,10 +20,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       cordova.plugins.Keyboard.disableScroll(true);
 
       //TESTITEST TESTITEST
-      /*cordova.plugins.backgroundMode.setDefaults({
+      cordova.plugins.backgroundMode.setDefaults({
           title:  'MIWADO',
-          text:   'Checking for new messages'
-      });*/
+          text:   'Schaut für neue Nachrichten.'
+      });
 
       cordova.plugins.backgroundMode.enable();
 
@@ -39,12 +39,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
               if (typeof oldMsgs !== 'undefined') {
                 if (oldMsgs < comms.length) {
                   var newMsgs = comms.length - oldMsgs;
-                  LocalNotifications.schedule({
+                  //alert('Du hast ' + newMsgs + ' neue Nachrichten.')
+                  //MessageNotify.setMsgNotification(newMsgs);
+                  $cordovaLocalNotification.schedule({
                     id: 1,
-                    text: "You have " + newMsgs + " new messages",
+                    text: "Du hast " + newMsgs + " neue Nachrichten.",
                     title: 'MIWADO',
-                    sound: isAndroid? 'file://sound.mp3': 'file://beep.caf',
-                    icon: '../img/logo try.png'
+                    //sound: isAndroid? 'file://sound.mp3': 'file://beep.caf',
+                    icon: 'img/logo try.png'
                   });
                 }
               }

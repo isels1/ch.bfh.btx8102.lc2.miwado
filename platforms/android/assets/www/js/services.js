@@ -60,6 +60,13 @@ angular.module('starter.services', [])
          };
 })
 
+.factory('MessageNotify', function(){
+  return {
+    setMsgNotification: function(val) {
+    }
+  }
+})
+
 .factory('Contacts', function() {
   var patients = [{
     id: '5835786379c7214eaafa9408',

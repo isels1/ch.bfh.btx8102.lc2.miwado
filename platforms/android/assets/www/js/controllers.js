@@ -203,20 +203,25 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Contacts, ownMidataService, $state, $ionicScrollDelegate) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, Contacts, ownMidataService, $state, $ionicScrollDelegate, $cordovaLocalNotification) {
    var isLoggedIn = ownMidataService.loggedIn();
    if (isLoggedIn) {
+
      $scope.selectedPat = "";
      //If Pat then selected pat = logged in pat
      //Else Pat is the selected pat from the list
      if (window.localStorage.getItem("userType") == 1) {
        $scope.selectedPat = Contacts.selectPat(window.localStorage.getItem("username"));
        $scope.myId = $scope.selectedPat.id;
+       $scope.hideBackButton = true;
+       $scope.viewTitle = "Meine Kommunikation";
      } else {
        $scope.selectedPat = JSON.parse(window.localStorage.getItem("selectedPat"));
        $scope.hp = Contacts.selectHp(window.localStorage.getItem("username"));
        //window.localStorage.removeItem("selectedPat");
        $scope.myId = $scope.hp.id;
+       $scope.hideBackButton = false;
+       $scope.viewTitle = "Kommunikation mit";       
      }
 
      $scope.hideTime = true;
@@ -295,13 +300,14 @@ angular.module('starter.controllers', [])
                   continue;
                 }
               }
-
-              $scope.messages.push({
-                  userId: sId,
-                  sender: s,
-                  text: t,
-                  time: day + "." + month + "." + years + " " + hours + ":" + minutes,
-                  style: style
+              $scope.$apply(function() {
+                $scope.messages.push({
+                    userId: sId,
+                    sender: s,
+                    text: t,
+                    time: day + "." + month + "." + years + " " + hours + ":" + minutes,
+                    style: style
+                  });
                 });
             }
             $scope.refreshItems();
@@ -379,13 +385,13 @@ angular.module('starter.controllers', [])
 
      $scope.doRefresh = function() {
        $scope.receiveMessage();
-       $scope.$broadcast('scroll.refreshComplete');
+       //$scope.$broadcast('scroll.refreshComplete');
        $ionicScrollDelegate.scrollBottom(true);
      };
 
      $scope.goToBottom = function() {
-       $scope.$broadcast('scroll.refreshComplete');
-       $ionicScrollDelegate.scrollBottom(true);
+       //$scope.$broadcast('scroll.refreshComplete');
+       $ionicScrollDelegate.scrollBottom();
      };
 
   } else {
