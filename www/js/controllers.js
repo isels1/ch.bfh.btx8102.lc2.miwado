@@ -188,7 +188,10 @@ angular.module('starter.controllers', [])
 
       //$scope.remove = function(chat) { Chats.remove(chat); };
       $scope.logout = function() {
-        window.localStorage.clear();
+          //window.localStorage.clear();
+          window.localStorage.removeItem('username');
+          window.localStorage.removeItem('userType');
+          window.localStorage.removeItem('selectedPat');
           ownMidataService.logout();
           $state.go('login');
       };
@@ -221,7 +224,7 @@ angular.module('starter.controllers', [])
        //window.localStorage.removeItem("selectedPat");
        $scope.myId = $scope.hp.id;
        $scope.hideBackButton = false;
-       $scope.viewTitle = "Kommunikation mit";       
+       $scope.viewTitle = "Kommunikation mit";
      }
 
      $scope.hideTime = true;
@@ -378,7 +381,10 @@ angular.module('starter.controllers', [])
 
       $scope.receiveMessage();
       $scope.logout = function() {
-         window.localStorage.clear();
+         //window.localStorage.clear();
+         window.localStorage.removeItem('username');
+         window.localStorage.removeItem('userType');
+         window.localStorage.removeItem('selectedPat');
          ownMidataService.logout();
          $state.go('login');
      };

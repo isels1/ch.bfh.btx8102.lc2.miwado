@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .constant('APPSECRET', 'g82xlcisy4zneu5n9k3dgxgcifr6vfmx')
 
 
-.run(function($ionicPlatform, $location, $rootScope, ownMidataService, $cordovaLocalNotification) {
+.run(function($ionicPlatform, $location, $rootScope, ownMidataService, $cordovaLocalNotification, $state, $stateParams) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -46,11 +46,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     text: "Du hast " + newMsgs + " neue Nachrichten.",
                     title: 'MIWADO',
                     //sound: isAndroid? 'file://sound.mp3': 'file://beep.caf',
-                    icon: 'img/logo try.png'
+                    icon: 'res:/icon.png'
+                  }).then(function() {
+                    $state.go($state.current, $stateParams, {reload: true, inherit: false});
+                    console.log("Instant Notification set");
                   });
                 }
+                window.localStorage.setItem("msgAmount", comms.length);
               }
-              window.localStorage.setItem("msgAmount", comms.length);
             });
           }
         }, 5000);

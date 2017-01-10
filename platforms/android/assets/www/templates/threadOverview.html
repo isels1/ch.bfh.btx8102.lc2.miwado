@@ -9,7 +9,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="pat in patients" type="item-text-wrap" ng-click="goToThread(pat)">
         <img ng-src="{{pat.face}}">
-        <h2>{{pat.name}}</h2>
+        <h2 class="listName">{{pat.name}}</h2>
         <!--<p>{{chat.lastText}}</p>-->
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>

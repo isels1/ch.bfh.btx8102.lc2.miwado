@@ -19,6 +19,10 @@
   color: #545454 !important;
 }
 
+.listName {
+  margin-top: 10px !important;
+}
+
 .bar-header {
     background:#268ba3 !important;
 }
