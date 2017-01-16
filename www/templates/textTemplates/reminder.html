@@ -1,67 +1,66 @@
+<!--
+  This template will be used in the chat as a guidline for sending an appointment request
+  to the Patient.
+-->
+<link href="css/textTemplates.css" rel="stylesheet">
+<div class="tempelateTermin">
+  <!--Header-->
+  <div class="row ">
+    <label class="textHeader">Guten Tag</label>
+    <select class="selectGender">
+      <option>---</option>
+      <option>Herr</option>
+      <option>Frau</option>
+    </select>
+    <input type="text" class="headerNameField" placeholder="Patientenname">
+  </div>
 
-                    <!--
-                      This template will be used in the chat as a guidline for sending an appointment request
-                      to the Patient.
-                    -->
-                    <link href="css/textTemplates.css" rel="stylesheet">
-                    <div class="tempelateTermin">
-                      <!--Header-->
-                      <div class="row ">
-                        <label class="textHeader">Guten Tag</label>
-                        <select class="selectGender">
-                          <option>---</option>
-                          <option>Herr</option>
-                          <option>Frau</option>
-                        </select>
-                        <input type="text" class="headerNameField" placeholder="Patientenname">
-                      </div>
+  <!--Body-->
+  <div class="row myRow">
+    <label class="textBody">
+      Ihr nächster Termin ist am
+    </label>
+    <input type="date" class="selectDate">
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+      Bitte  seien Sie um
+    </label>
+    <input type="time" class="selectTime">
 
-                      <!--Body-->
-                      <div class="row myRow">
-                        <label class="textBody">
-                          Ihr nächster Termin ist am
-                        </label>
-                        <input type="date" class="selectDate">
-                      </div>
-                      <div class="row myRow">
-                        <label class="textBody">
-                          Bitte  seien Sie um
-                        </label>
-                        <input type="time" class="selectTime">
+    <label class="textBody">
+      in der
+    </label>
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+    Kinderklinik, Eingang 31, Stockwerk G
+    </label>
+  </div>
+  <div class="spacer fixer1 selectVisible">
+    <div class="row myRow">
+      <label class="textBody">
+        Bitte erscheinen Sie nüchtern, das heisst ohne Frühstück.
+      </label>
+    </div>
+    <div class="row myRow">
+      <label class="textBody">
+        Jedoch sollten die Morgenmedikamente eingenommen werden ausser, wenn vom Arzt anders angeordnet.
+    </div>
+  </div>
+  <div class="row myRow">
+    <label class="textBody">
+      Eine Absage des Termins muss 24 Stunden vor dem Termin erfolgen. Absagen, welche später erfolgen, müssen wir Ihnen leider verrechnen.
+    </label>
+  </div>
+  Nüchtern
+  <input type="checkbox"  class="sexyCheckBox" ng-model="selectedOption" ng-change="statusChange()">
 
-                        <label class="textBody">
-                          in der
-                        </label>
-                      </div>
-                      <div class="row myRow">
-                        <label class="textBody">
-                        Kinderklinik, Eingang 31, Stockwerk G
-                        </label>
-                      </div>
-                      <div class="spacer fixer1 selectVisible">
-                        <div class="row myRow">
-                          <label class="textBody">
-                            Bitte erscheinen Sie nüchtern, das heisst, ohne Frühstück.
-                          </label>
-                        </div>
-                        <div class="row myRow">
-                          <label class="textBody">
-                            Jedoch sollten die Morgenmedikamente eingenommen werden ausser, wenn vom Arzt anders angeordnet.
-                        </div>
-                      </div>
-                      <div class="row myRow">
-                        <label class="textBody">
-                          Eine Absage des Termins muss 24 Stunden vor dem Termin erfolgen. Absagen, welche später erfolgen, müssen wir Ihnen leider verrechnen.
-                        </label>
-                      </div>
-                      Nüchtern
-                      <input type="checkbox"  class="sexyCheckBox" ng-model="selectedOption" ng-change="statusChange()">
-
-                      <!--Footer-->
-                      <div class="row">
-                        <label class="textFooter">Mit freundlichen Grüssen</label>
-                      </div>
-                      <div class="row">
-                        <input type="text" class="senderName" placeholder="Absendername">
-                      </div>
-                    </div>
+  <!--Footer-->
+  <div class="row">
+    <label class="textFooter">Mit freundlichen Grüssen</label>
+  </div>
+  <div class="row">
+    <input type="text" class="senderName" placeholder="Absendername">
+  </div>
+</div>
