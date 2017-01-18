@@ -18,6 +18,10 @@ angular.module('starter.controllers', [])
       $state.go('login');
   }
 
+  $scope.showImpressum = function() {
+    $state.go('impressum');
+  }
+
   } else {
       $state.go('login');
   }
@@ -252,8 +256,8 @@ angular.module('starter.controllers', [])
               var day = d.getUTCDate();
               var month = d.getUTCMonth() + 1;
               var years = d.getUTCFullYear();
-              var hours = d.getUTCHours();
-              var minutes = d.getUTCMinutes();
+              var hours = d.getHours();
+              var minutes = d.getMinutes();
 
               if (day.toString().length == 1) {
                 day = "0" + day;
